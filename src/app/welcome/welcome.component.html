@@ -1,0 +1,10 @@
+<div class="grid-container">
+	<div class="grid-x grid-padding-x">
+    	<div class="cell large-6 large-offset-3">
+
+			<button type="button" class="button small expanded" routerLink="/configure-race">Start New Race</button>
+			<button *ngIf="raceExists" type="button" class="button small expanded" routerLink="/race">Continue Previous Race</button>
+
+		</div>
+	</div>
+</div>

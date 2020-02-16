@@ -1,0 +1,36 @@
+.die {
+	// display: inline-block;
+	// width: 48px;
+	// height: 48px;
+	border-radius: 3px;
+	border: none;
+	color: #FFFFFF;
+	//margin: 6px 6px;
+	// text-align: center;
+
+	&.gear {
+		background-color: #555555;
+	}
+
+	&.brake {
+		background-color: red;
+	}
+
+	&.coast {
+		background-color: #FAFAFA;
+		color: #555555;
+	}
+	
+}
+
+.selected {
+	background-color: #999999;
+	opacity: 0.2;
+	color: #FFFFFF;
+	border: 1px solid #555555;
+}
+
+textarea {
+	height: 100px;
+}
+
