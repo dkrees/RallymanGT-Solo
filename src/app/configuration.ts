@@ -62,21 +62,34 @@ export interface Race {
 		special: string,
 		pitStops: PitStops,
 		class: CarClass,
-		tyres: Tyres
+		tyres: Tyres,
+		isgoytra: {spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
 	},
 	dashboard: Dashboard,
 	log: Turn[]
 }
 
 export let timing = {
-	'6' : 10,
-	'5' : 15,
-	'4' : 20,
-	'3' : 30,
-	'2' : 40,
-	'1' : 50,
-	'0' : 60,
-	'00': 30 // ISGOYTRA rules
+	standardRules: {
+		'6' : 10,
+		'5' : 15,
+		'4' : 20,
+		'3' : 30,
+		'2' : 40,
+		'1' : 50,
+		'0' : 60,
+		'00': 120
+	},
+	isgoytraRules: {
+		'6' : 10,
+		'5' : 15,
+		'4' : 20,
+		'3' : 30,
+		'2' : 40,
+		'1' : 50,
+		'0' : 60,
+		'00': 30
+	}
 }
 
 export let damage = [

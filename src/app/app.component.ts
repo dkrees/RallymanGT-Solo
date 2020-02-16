@@ -33,24 +33,14 @@ export class AppComponent implements OnInit {
 
 	constructor(private localstorage: LocalstorageService, public fb: FormBuilder) {}
 
-	// TODO: MAKE THIS FORM WORK...
-	saveDetails() {
-	
-	   alert(JSON.stringify(this.raceDetails.name));
-
-	}
-
-	raceDetails: {};
-
-	
 	gears:  	Dice[];
 	brakes: 	Dice[];
 	coasts: 	Dice[];
 	turn: 		Turn;
 	race: 		Race;
 	logOutput: 	string;
+	registrationForm;
 
-	
 
 	// class: CarClass;
 	carClass = CarClass;
@@ -124,8 +114,12 @@ export class AppComponent implements OnInit {
 		}
 
 		// apply timing with this turns gear
-		this.turn.time = timing[this.turn.gear];
-
+		if (this.race.details.isgoytra.spareTyre) {
+			this.turn.time = timing.isgoytraRules[this.turn.gear];
+		} else {
+			this.turn.time = timing.standardRules[this.turn.gear];
+		}
+		
 	}
 
 	formatTime(seconds:number):string {
@@ -328,32 +322,6 @@ export class AppComponent implements OnInit {
 	output():void {
 		this.logOutput = '';
 
-		// need to capture race details 
-		// ISGOYTRA formats, long/short notation (later)
-
-		// [Rally Name]
-		// [Special 1]
-		// [Tires used]
-		// ([Card time] – [Focus tokens]) = [Total time]
-		// [Raw format Rally notation]
-
-		// [Special 2] ... If applicable
-		// [Tires used]
-		// ([Card time] - [Focus tokens]) = [Total time]
-		// [Raw format Rally notation]
-
-		// [etc.]
-
-		// [Total Stage time]
-
-		// EG:
-		//January Rally 2020
-
-		// Special 1
-		// Asphalt Tires
-		// (7:00 - 0:39) = 6:21
-		// 3:5(4):0(5)!:5(7)!S:0(4)!G:3!C:4b(-1):5(5):5(4)!C:1(-3):3(5):0(5)!GG:4(4)!G
-
 		this.logOutput = this.race.details.name
 			+ '\nSpecial: ' + this.race.details.special
 			+ '\nClass: ' + this.race.details.class
@@ -386,8 +354,25 @@ export class AppComponent implements OnInit {
 		} catch (err) {
 			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CNTRL (CMD on Mac) + "C"');
 		}
-
 	}
+
+
+	// Submit Registration Form
+	saveDetails() {
+		alert(JSON.stringify(this.registrationForm.value));
+
+		this.race.details = {
+			name: 		this.registrationForm.value.name,
+			special: 	this.registrationForm.value.special,
+			class: 		this.registrationForm.value.class,
+			weather: 	this.registrationForm.value.weather,
+			tyres: 		this.registrationForm.value.tyres,
+			pitStops: 	this.registrationForm.value.pits,
+			isgoytra: {spareTyre: this.registrationForm.value.isgoytra.spareTyre} 	
+		}
+
+		// TODO: close the pane
+	}  
 
 	// initialise app
 	ngOnInit() {
@@ -399,11 +384,12 @@ export class AppComponent implements OnInit {
 			this.race = {
 				details: {
 					name: 'Path of the Serpent',
-					weather: Weather.wet,
 					special: '1: 2 Laps',
-					pitStops: PitStops.false,
 					class: CarClass.gt6,
-					tyres: Tyres.wet
+					weather: Weather.wet,
+					tyres: Tyres.wet,
+					pitStops: PitStops.false,
+					isgoytra: {spareTyre: true}
 				},
 				dashboard: {
 					class: 'GT6',
@@ -423,10 +409,16 @@ export class AppComponent implements OnInit {
 			this.logOutput = '';
 		}
 
-		this.raceDetails = this.fb.group({
-			name: this.race.details.name,
-			special: this.race.details.special
+		this.registrationForm = this.fb.group({
+			name: [this.race.details.name],
+			special: [this.race.details.special],
+			class: [this.race.details.class],
+			weather: [this.race.details.weather],
+			tyres: [this.race.details.tyres],
+			pits: [this.race.details.pitStops],
+			isgoytra: [this.race.details.isgoytra.spareTyre]
 		});
+
 		
 		this.resetTurn();
   	}
