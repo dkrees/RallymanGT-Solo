@@ -23,8 +23,6 @@ export class ConfigureRaceComponent implements OnInit {
 	// Submit Race Details Form
 	saveDetails() {
 
-		console.log('rules:', this.raceDetailsForm.value.isgoytra);
-
 		this.race.details = {
 			name: 		this.raceDetailsForm.value.name,
 			special: 	this.raceDetailsForm.value.special,
