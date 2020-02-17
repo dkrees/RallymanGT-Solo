@@ -1,12 +1,20 @@
+.bg-dark {
+	padding-top: 12px;
+	background-color: #77777750;
+}
+
+.screen-light {
+	background-color: rgba(239,236,229,0.8);
+}
+
 .die {
-	// display: inline-block;
-	// width: 48px;
-	// height: 48px;
 	border-radius: 3px;
 	border: none;
 	color: #FFFFFF;
-	//margin: 6px 6px;
-	// text-align: center;
+
+	-webkit-box-shadow: 0 3px 6px #222222;
+	-moz-box-shadow: 0 3px 6px #222222;
+	box-shadow: 0 3px 6px #222222;
 
 	&.gear {
 		background-color: #555555;
@@ -25,9 +33,14 @@
 
 .selected {
 	background-color: #999999;
-	opacity: 0.2;
+	opacity: 0.6;
 	color: #FFFFFF;
-	border: 1px solid #555555;
+}
+
+.digit {
+	font-family: 'seven-segment'; 
+	font-weight: bold; 
+	// font-style: italic;  
 }
 
 textarea {

@@ -28,7 +28,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/foundation-sites/assets/foundation.scss",
               "src/styles.scss"
             ],
             "scripts": [

@@ -121,7 +121,7 @@ export class RaceComponent implements OnInit {
 		let secondsValue = seconds%60;
 
 		let duration = moment().second(secondsValue).minute(minuteValue);
-		return duration.format("mm:ss");
+		return duration.format("mm.ss");
 	}
 
 	// total the time (seconds) not including focus token reduction

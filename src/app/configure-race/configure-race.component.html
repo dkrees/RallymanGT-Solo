@@ -1,64 +1,66 @@
 
 <div class="grid-container">
-
   <div class="grid-x grid-padding-x">
     <div class="cell large-6 large-offset-3">
-      <button class="close-button" aria-label="Close menu" type="button" data-close>
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <div class="card">
+        <div class="card-divider">
+          <h1>Race Details</h1>
+        </div>
 
-      <h1>Race Details</h1>
+        <div class="card-section">
 
-      <form [formGroup]="raceDetailsForm" (ngSubmit)="saveDetails()">
+          <form [formGroup]="raceDetailsForm" (ngSubmit)="saveDetails()">
 
-        <label for="name">
-          Name
-          <input id="name" type="text" name="raceName" formControlName="name" placeholder="Name"/>
-        </label>
+            <label for="name">
+              Name
+              <input id="name" type="text" name="raceName" formControlName="name" placeholder="Name"/>
+            </label>
 
-        <label for="special">
-          Special
-          <input id="special" type="text" name="special" formControlName="special" placeholder="Special"/>
-        </label>
+            <label for="special">
+              Special
+              <input id="special" type="text" name="special" formControlName="special" placeholder="Special"/>
+            </label>
 
-        <fieldset>
-          <label for="class">Class</label>
-          <input type="radio" name="class" formControlName="class" value="GT6" id="class-GT6"><label for="class-GT6">GT6</label>
-          <input type="radio" name="class" formControlName="class" value="GT5" id="class-GT5"><label for="class-GT5">GT5</label>
-          <input type="radio" name="class" formControlName="class" value="GT4" id="class-GT4"><label for="class-GT4">GT4</label>
-        </fieldset>
+            <fieldset>
+              <label for="class">Class</label>
+              <input type="radio" name="class" formControlName="class" value="GT6" id="class-GT6"><label for="class-GT6">GT6</label>
+              <input type="radio" name="class" formControlName="class" value="GT5" id="class-GT5"><label for="class-GT5">GT5</label>
+              <input type="radio" name="class" formControlName="class" value="GT4" id="class-GT4"><label for="class-GT4">GT4</label>
+            </fieldset>
 
-        <fieldset>
-          <label for="class">Weather</label>
-          <input type="radio" name="weather" formControlName="weather" value="Dry" id="weather-dry"><label for="weather-dry">Dry</label>
-          <input type="radio" name="weather" formControlName="weather" value="Wet" id="weather-wet"><label for="weather-wet">Wet</label>
-        </fieldset>
+            <fieldset>
+              <label for="class">Weather</label>
+              <input type="radio" name="weather" formControlName="weather" value="Dry" id="weather-dry"><label for="weather-dry">Dry</label>
+              <input type="radio" name="weather" formControlName="weather" value="Wet" id="weather-wet"><label for="weather-wet">Wet</label>
+            </fieldset>
 
-        <fieldset>
-          <label for="class">Tyres</label>
-          <input type="radio" name="tyres" formControlName="tyres" value="Asphalt" id="tyres-asphalt"><label for="tyres-asphalt">Asphalt</label>
-          <input type="radio" name="tyres" formControlName="tyres" value="Soft" id="tyres-soft"><label for="tyres-soft">Soft</label>
-          <input type="radio" name="tyres" formControlName="tyres" value="Wet" id="tyres-wet"><label for="tyres-wet">Wet</label>
-        </fieldset>
+            <fieldset>
+              <label for="class">Tyres</label>
+              <input type="radio" name="tyres" formControlName="tyres" value="Asphalt" id="tyres-asphalt"><label for="tyres-asphalt">Asphalt</label>
+              <input type="radio" name="tyres" formControlName="tyres" value="Soft" id="tyres-soft"><label for="tyres-soft">Soft</label>
+              <input type="radio" name="tyres" formControlName="tyres" value="Wet" id="tyres-wet"><label for="tyres-wet">Wet</label>
+            </fieldset>
 
-        <fieldset>
-          <label for="class">Pit Stops</label>
-          <input type="radio" name="pits" formControlName="pits" value="Yes" id="pits-yes"><label for="pits-yes">Yes</label>
-          <input type="radio" name="pits" formControlName="pits" value="No" id="pits-no"><label for="pits-no">No</label>
-        </fieldset>
+            <fieldset>
+              <label for="class">Pit Stops</label>
+              <input type="radio" name="pits" formControlName="pits" value="Yes" id="pits-yes"><label for="pits-yes">Yes</label>
+              <input type="radio" name="pits" formControlName="pits" value="No" id="pits-no"><label for="pits-no">No</label>
+            </fieldset>
 
-        <fieldset>
-          <label for="class">ISGOYTRA Rules</label>
-          <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="true" id="isgoytra-yes"><label for="isgoytra-yes">Yes</label>
-          <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="false" id="isgoytra-no"><label for="isgoytra-no">No</label>
-        </fieldset>
-        
-        <button type="submit" class="button small expanded">Save</button>
-        <button type="button" class="button small expanded clear secondary" (click)="cancelForm()">Cancel</button>
-      </form>
+            <fieldset>
+              <label for="class">ISGOYTRA Rules</label>
+              <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="true" id="isgoytra-yes"><label for="isgoytra-yes">Yes</label>
+              <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="false" id="isgoytra-no"><label for="isgoytra-no">No</label>
+            </fieldset>
+            
+            <button type="submit" class="button small expanded">Save</button>
+            <button type="button" class="button small expanded clear secondary" (click)="cancelForm()">Cancel</button>
+          </form>
 
+        </div>
+
+      </div>
     </div>
   </div>
-
 </div>
 
