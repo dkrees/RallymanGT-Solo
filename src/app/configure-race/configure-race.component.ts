@@ -23,6 +23,8 @@ export class ConfigureRaceComponent implements OnInit {
 	// Submit Race Details Form
 	saveDetails() {
 
+		console.log('rules:', this.raceDetailsForm.value.isgoytra);
+
 		this.race.details = {
 			name: 		this.raceDetailsForm.value.name,
 			special: 	this.raceDetailsForm.value.special,
@@ -30,7 +32,7 @@ export class ConfigureRaceComponent implements OnInit {
 			weather: 	this.raceDetailsForm.value.weather,
 			tyres: 		this.raceDetailsForm.value.tyres,
 			pitStops: 	this.raceDetailsForm.value.pits,
-			isgoytra: 	{spareTyre: this.raceDetailsForm.value.isgoytra.spareTyre} 	
+			isgoytra: 	{spareTyre: this.raceDetailsForm.value.isgoytra} 	
 		}
 
 		this.localstorage.save(this.race);

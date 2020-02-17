@@ -73,6 +73,7 @@ export class RaceComponent implements OnInit {
 			// set gear to LOC 
 			this.turn.gear = this.turn.locGear;
 
+			// TODO: DO NOT COUNT BRAKE DICE FOR FOCUS!!
 			// show focus token adjustment in parentheses
 			if (this.turn.flatOut) {
 				this.turn.entry = this.turn.entry.concat('(' + this.turn.dice.length + ')');
