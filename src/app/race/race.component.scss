@@ -7,6 +7,13 @@
 	background-color: rgba(239,236,229,0.8);
 }
 
+.log-entry {
+	display: block;
+	button {
+		float: right;
+	}
+}
+
 .die {
 	border-radius: 3px;
 	border: none;

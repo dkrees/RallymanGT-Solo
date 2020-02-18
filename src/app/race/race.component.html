@@ -80,9 +80,10 @@
     <div class="grid-x grid-padding-x">
       
       <div class="cell auto">
-        <ul class="no-bullet">
-          <li *ngFor="let turn of race.log; let i = index">{{turn.id}}: {{turn.entry}}: {{formatTime(turn.time)}} <button type="button" (click)="removeLogEntry(i)">&times;</button></li>
-        </ul>
+        <div class="log-entry" *ngFor="let turn of race.log; let i = index">
+          {{i+1}}: {{turn.entry}}: {{formatTime(turn.time)}}<button type="button" class="remove-entry" (click)="removeLogEntry(i)"><span>&times;</span></button>
+        </div>
+
         <p>Time: <span class="digit">{{formatTime(this.race.dashboard.totalTime)}}</span></p>
         <p>Focus: {{race.dashboard.focusTokens}}</p>
         <p>Total: <span class="digit">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</span></p>

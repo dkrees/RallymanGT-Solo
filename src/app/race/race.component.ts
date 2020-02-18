@@ -51,6 +51,20 @@ export class RaceComponent implements OnInit {
 		this.output();
 	}
 
+	gainFocus():number {
+		let focusGained = 0;
+
+		for (var i = 0; i < this.turn.dice.length; ++i) {
+
+			// add focus if its not a braking die
+			if (this.turn.dice[i].label !== 'b') {
+				focusGained++;
+			}			
+		}
+
+		return focusGained;
+	}
+
 	// update the turn log entry
 	entry():void {
 		this.turn.entry = '';
@@ -73,10 +87,9 @@ export class RaceComponent implements OnInit {
 			// set gear to LOC 
 			this.turn.gear = this.turn.locGear;
 
-			// TODO: DO NOT COUNT BRAKE DICE FOR FOCUS!!
 			// show focus token adjustment in parentheses
 			if (this.turn.flatOut) {
-				this.turn.entry = this.turn.entry.concat('(' + this.turn.dice.length + ')');
+				this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
 			} else if (this.turn.focus != 0) {
 				this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
 			}
@@ -101,8 +114,8 @@ export class RaceComponent implements OnInit {
 
 		// otherwise flat out
 		} else if (this.turn.flatOut) {
-			// show focuse token adjustment in parantheses (duplicate code above!)
-			this.turn.entry = this.turn.entry.concat('(' + this.turn.dice.length + ')');
+			// show focus token adjustment in parentheses (duplicate code above!)
+			this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
 		} else if (this.turn.focus != 0) {
 			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
 		}
@@ -163,7 +176,7 @@ export class RaceComponent implements OnInit {
 			}
 			this.turn.focus = focus;
 		} else {
-			this.turn.focus = -this.turn.focus;
+			this.turn.focus = 0;
 		}
 
 		this.entry();
@@ -211,15 +224,7 @@ export class RaceComponent implements OnInit {
 	// Reset the turn object for a new turn
 	resetTurn():void {
 
-		let lastTurnId:number;
-		if (this.race.log.length) {
-		 	lastTurnId = this.race.log[this.race.log.length-1].id + 1;
-		 } else {
-		 	lastTurnId = 1;
-		 }
-
 		this.turn = {
-			id: lastTurnId,
 			dice: [],
 			loc: false,
 			locGear: '',
@@ -236,7 +241,6 @@ export class RaceComponent implements OnInit {
 		};
 
 		// TODO: setup as per car class (and existing log - damage effects?)
-
 		// Get Gear Dice
 		this.gears = [
 			{id: '0',  type: 'gear', label: '0',  selected: false},
@@ -349,24 +353,6 @@ export class RaceComponent implements OnInit {
 			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CNTRL (CMD on Mac) + "C"');
 		}
 	}
-
-
-	/*// Submit Registration Form
-	saveDetails() {
-		alert(JSON.stringify(this.registrationForm.value));
-
-		this.race.details = {
-			name: 		this.registrationForm.value.name,
-			special: 	this.registrationForm.value.special,
-			class: 		this.registrationForm.value.class,
-			weather: 	this.registrationForm.value.weather,
-			tyres: 		this.registrationForm.value.tyres,
-			pitStops: 	this.registrationForm.value.pits,
-			isgoytra: {spareTyre: this.registrationForm.value.isgoytra.spareTyre} 	
-		}
-
-		// TODO: close the pane
-	}  */
 
 	// initialise app
 	ngOnInit() {

@@ -21,7 +21,6 @@ export interface Dice {
 
 
 export interface Turn {
-	id: number;
 	dice: Dice[],
 	loc: boolean,
 	locGear: string,
