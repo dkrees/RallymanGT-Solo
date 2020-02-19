@@ -23,7 +23,7 @@ export class RaceComponent implements OnInit {
 
 // Output log short/long hand and total time
 // Save races?
-// Make it look sexy, graphics!!
+
 
 	constructor(private localstorage: LocalstorageService) {}
 
@@ -33,8 +33,21 @@ export class RaceComponent implements OnInit {
 	turn: 		Turn;
 	race: 		Race;
 	logOutput: 	string;
-	// registrationForm;
 
+
+	spendFocus;
+	spendFocusOptions = [];
+
+	setupFocusOptions() {
+		let n = 0;
+		for (var i = 0; i < this.gears.length + this.brakes.length + this.coasts.length + 1; ++i) {
+			n += i;
+			let label = (i == 0) ? 'None' : i + ' Dice ' + '(-' + n + ' Focus)';
+			this.spendFocusOptions.push({label: label, value: n});
+		}
+
+		this.spendFocus = this.spendFocusOptions[0].value;
+	}
 
 	// class: CarClass;
 	// carClass = CarClass;
@@ -135,7 +148,7 @@ export class RaceComponent implements OnInit {
 		let secondsValue = seconds%60;
 
 		let duration = moment().second(secondsValue).minute(minuteValue);
-		return duration.format("mm.ss");
+		return duration.format("mm:ss");
 	}
 
 	// total the time (seconds) not including focus token reduction
@@ -164,6 +177,11 @@ export class RaceComponent implements OnInit {
 
 	// going flat out!
 	flatOut():void {
+
+		// reset the focus spend options to none
+		this.spendFocus = this.spendFocusOptions[0].value;
+
+
 		this.turn.flatOut = !this.turn.flatOut;
 		if (this.turn.flatOut){
 			let focus = 0;
@@ -179,6 +197,13 @@ export class RaceComponent implements OnInit {
 			this.turn.focus = 0;
 		}
 
+		this.entry();
+
+		
+	}
+
+	focusSpentSelect(focusSpent):void {
+		this.turn.focus = focusSpent;
 		this.entry();
 	}
 
@@ -264,6 +289,8 @@ export class RaceComponent implements OnInit {
 			{id: 'c1', type: 'coast', label: 'c', selected: false},
 			{id: 'c2', type: 'coast', label: 'c', selected: false}
 		];
+
+		this.setupFocusOptions();
 	}
 
 	// submitLogEntry the turn entry to the log
@@ -326,12 +353,12 @@ export class RaceComponent implements OnInit {
 			+ '\nPit Stops: ' + this.race.details.pitStops
 			+ '\nWeather: ' + this.race.details.weather
 			+ '\nTyres: ' + this.race.details.tyres
-			+ '\n('+ this.formatTime(this.race.dashboard.totalTime) + '-' + this.formatTime(this.race.dashboard.focusTokens)+ ') = ' 
+			+ '\n('+ this.formatTime(this.race.dashboard.totalTime) + '-' + this.formatTime(this.race.dashboard.focusTokens) + ') = ' 
 			+ this.formatTime(this.race.dashboard.totalTime - this.race.dashboard.focusTokens)
 			+ '\n';
 
 		for (var i = 0; i < this.race.log.length; ++i) {
-			this.logOutput = this.logOutput.concat(this.race.log[i].entry + ':');
+			this.logOutput = this.logOutput.concat(this.race.log[i].entry + ((i < this.race.log.length - 1) ? ':' : ''));
 		}
 	}
 
@@ -389,18 +416,9 @@ export class RaceComponent implements OnInit {
 			this.logOutput = '';
 		}
 
-		// this.registrationForm = this.fb.group({
-		// 	name: [this.race.details.name],
-		// 	special: [this.race.details.special],
-		// 	class: [this.race.details.class],
-		// 	weather: [this.race.details.weather],
-		// 	tyres: [this.race.details.tyres],
-		// 	pits: [this.race.details.pitStops],
-		// 	isgoytra: [this.race.details.isgoytra.spareTyre]
-		// });
-
 		
 		this.resetTurn();
+
   	}
 
 }

@@ -24,11 +24,35 @@
 	box-shadow: 0 3px 6px #222222;
 
 	&.gear {
-		background-color: #555555;
+		background-color: rgba(27,27,25,1);
+
+		&.g1 {
+			color: rgba(0,160,37,1);
+		}
+
+		&.g2 {
+			color: rgba(187,208,0,1);
+		}
+
+		&.g3 {
+			color: rgba(245,190,0,1);
+		}
+
+		&.g4 {
+			color: rgba(255,142,0,1);
+		}
+
+		&.g5 {
+			color: rgba(239,56,0,1);
+		}
+
+		&.g6 {
+			color: rgba(229,0,15,1);
+		}
 	}
 
 	&.brake {
-		background-color: red;
+		background-color: rgba(211,30,14,1);
 	}
 
 	&.coast {
@@ -45,7 +69,7 @@
 }
 
 .digit {
-	font-family: 'seven-segment'; 
+	font-family: 'Fira Code', monospace;
 	font-weight: bold; 
 	// font-style: italic;  
 }

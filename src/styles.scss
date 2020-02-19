@@ -8,11 +8,8 @@
 // import local global overrides
 @import './assets/foundation-sites/_global';
 
-@font-face {
-  font-family: seven-segment;
-  src: url(./assets/fonts/segment7/Segment7Standard.otf) format("opentype");
-}
-
+// FONT
+@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
 
 // CUSTOM STUFF
 body {

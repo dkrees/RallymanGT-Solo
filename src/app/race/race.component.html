@@ -6,7 +6,7 @@
 
     <div class="grid-x grid-padding-x">
       <div *ngFor="let gear of gears" class="cell shrink">
-        <button class="button gear die digit" type="button" [ngClass]="{'selected':gear.selected}" (click)="dieSelected(gear)">{{gear.label}}</button>
+        <button class="button gear die digit" type="button" [ngClass]="{'selected':gear.selected}" [class]="'g'+gear.label"  (click)="dieSelected(gear)">{{gear.label}}</button>
       </div>
        <div *ngFor="let brake of brakes" class="cell shrink">
         <button class="button brake die digit" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)">{{brake.label}}</button>
@@ -16,24 +16,22 @@
       </div>
     </div>
 
-    <!-- <div class="grid-x grid-padding-x">
-      <div *ngFor="let brake of brakes" class="cell shrink">
-        <button class="button brake die" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)">{{brake.label}}</button>
-      </div>
-      <div *ngFor="let coast of coasts" class="cell shrink">
-        <button class="button coast die" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)">{{coast.label}}</button>
-      </div>
-    </div> -->
-
-    <label for="focus">Focus <span *ngIf="!turn.flatOut">Spent</span><span *ngIf="turn.flatOut">Gained</span>:</label>
+    <label for="focus">Focus:</label>
     <div class="grid-x grid-padding-x">
-      <div class="cell auto">
+      <!-- <div class="cell auto">
         <input id="focus" class="input-group-field" type="number" name="focusTokens" [disabled]="turn.flatOut" [(ngModel)]="this.turn.focus">
-      </div>
+      </div> -->
 
       <div class="cell auto">
         <button type="button" class="button warning expanded" [ngClass]="{'selected':turn.flatOut}" (click)="flatOut()">Flat Out!</button>
       </div>
+
+      <div class="cell auto">
+        <select name="focusTokens" *ngIf="!turn.flatOut" [ngModel]="spendFocus" (ngModelChange)="focusSpentSelect($event)">
+          <option *ngFor="let option of spendFocusOptions" [ngValue]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+      
     </div>
 
 
@@ -67,7 +65,7 @@
     <label>Turn:</label>
     <div class="grid-x grid-margin-x">
       <div class="cell auto">
-        <p><span>{{turn.entry}}</span><span *ngIf="!turn.flatOut && turn.focus > 0">(-{{turn.focus}})</span></p>
+        <p><span>{{turn.entry}}</span><!-- <span *ngIf="!turn.flatOut && turn.focus > 0">(-{{turn.focus}})</span> --></p>
       </div>
     </div>
 
