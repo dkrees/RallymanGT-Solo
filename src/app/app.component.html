@@ -1,12 +1,8 @@
-<div class="content">
-	<h1>{{title}}</h1>
-
-	<nav>
-	  <!-- <a routerLink="/race">Race</a> -->
-	  <a routerLink="/welcome">Home</a>
-	  <!-- <a routerLink="/configure-race">Configure</a> -->
-	</nav>
-
-
-	<router-outlet></router-outlet>
+<div class="title-bar">
+	<div class="title-bar-left">
+		<a routerLink="/welcome"><i class="material-icons md-36" style="vertical-align: middle;">home</i> <span class="title-bar-title">{{title}}</span></a>
+		
+	</div>
 </div>
+
+<router-outlet></router-outlet>

@@ -1,10 +1,11 @@
 import { Component, OnInit } 	from '@angular/core';
-// import { FormBuilder } 			from "@angular/forms";
+import { Router } 				from '@angular/router';
 import * as moment 				from 'moment';
-import { Dashboard, Turn, Dice, Race, timing, damage, Weather, CarClass, Tyres, PitStops } from '../configuration';
+import { DiceType, Dice } 		from '../carClasses';
+import { Dashboard, Turn, Race, timing, damage, Weather, CarClass, Tyres, PitStops } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
 
-declare var $:any
+//declare var $:any
 
 @Component({
   selector: 'app-race',
@@ -25,22 +26,24 @@ export class RaceComponent implements OnInit {
 // Save races?
 
 
-	constructor(private localstorage: LocalstorageService) {}
+	constructor(private localstorage: LocalstorageService, private router: Router) {}
 
 	gears:  	Dice[];
 	brakes: 	Dice[];
 	coasts: 	Dice[];
+	boost:      Dice[];
 	turn: 		Turn;
 	race: 		Race;
+	dashboard:  Dashboard;
 	logOutput: 	string;
 
-
 	spendFocus;
-	spendFocusOptions = [];
+	spendFocusOptions;
 
 	setupFocusOptions() {
+		this.spendFocusOptions = [];
 		let n = 0;
-		for (var i = 0; i < this.gears.length + this.brakes.length + this.coasts.length + 1; ++i) {
+		for (var i = 0; i < this.gears.length + this.brakes.length + this.coasts.length + this.boost.length; ++i) {
 			n += i;
 			let label = (i == 0) ? 'None' : i + ' Dice ' + '(-' + n + ' Focus)';
 			this.spendFocusOptions.push({label: label, value: n});
@@ -48,9 +51,6 @@ export class RaceComponent implements OnInit {
 
 		this.spendFocus = this.spendFocusOptions[0].value;
 	}
-
-	// class: CarClass;
-	// carClass = CarClass;
 
 	// Save log to local storage
 	saveRace(race:Race):void {
@@ -60,6 +60,16 @@ export class RaceComponent implements OnInit {
 	// Get log from local storage
 	loadRace():void {
 		this.race = this.localstorage.load();
+		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
+
+		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
+
+		this.gears  = availableDice.gears;
+		this.brakes = availableDice.brakes;
+		this.coasts = availableDice.coasts;
+		this.boost  = availableDice.boost;
+		
+		this.setupFocusOptions();
 		this.totalTime();
 		this.output();
 	}
@@ -70,7 +80,7 @@ export class RaceComponent implements OnInit {
 		for (var i = 0; i < this.turn.dice.length; ++i) {
 
 			// add focus if its not a braking die
-			if (this.turn.dice[i].label !== 'b') {
+			if (this.turn.dice[i].type !== DiceType.brake) {
 				focusGained++;
 			}			
 		}
@@ -86,7 +96,7 @@ export class RaceComponent implements OnInit {
 			this.turn.entry = this.turn.entry.concat(this.turn.dice[i].label);
 
 			// set turns gear if its not coasting or braking
-			if (this.turn.dice[i].label !== 'b' && this.turn.dice[i].label !== 'c') {
+			if (this.turn.dice[i].type !== DiceType.brake && this.turn.dice[i].type !== DiceType.coast) {
 				this.turn.gear = this.turn.dice[i].label;
 			}			
 		}
@@ -166,7 +176,8 @@ export class RaceComponent implements OnInit {
 	dieSelected(die:Dice):void {
 		die.selected = !die.selected;
 		if (die.selected) {
-			this.turn.dice.push(die);
+			let d:Dice = {id: die.id, type: die.type, label: die.label, selected: die.selected};
+			this.turn.dice.push(d);
 		} else {
 			let result = this.turn.dice.findIndex(element => element === die);
 			this.turn.dice.splice(result, 1);
@@ -181,14 +192,13 @@ export class RaceComponent implements OnInit {
 		// reset the focus spend options to none
 		this.spendFocus = this.spendFocusOptions[0].value;
 
-
 		this.turn.flatOut = !this.turn.flatOut;
 		if (this.turn.flatOut){
 			let focus = 0;
 
 			// only gain focus tokens for non brake dice
 			for (var i = 0; i < this.turn.dice.length; ++i) {
-				if (this.turn.dice[i].type != 'brake') {
+				if (this.turn.dice[i].type != DiceType.brake) {
 					focus++;
 				}
 			}
@@ -198,8 +208,6 @@ export class RaceComponent implements OnInit {
 		}
 
 		this.entry();
-
-		
 	}
 
 	focusSpentSelect(focusSpent):void {
@@ -248,7 +256,6 @@ export class RaceComponent implements OnInit {
 	
 	// Reset the turn object for a new turn
 	resetTurn():void {
-
 		this.turn = {
 			dice: [],
 			loc: false,
@@ -265,32 +272,22 @@ export class RaceComponent implements OnInit {
 			gear: this.race.dashboard.gear
 		};
 
-		// TODO: setup as per car class (and existing log - damage effects?)
-		// Get Gear Dice
-		this.gears = [
-			{id: '0',  type: 'gear', label: '0',  selected: false},
-			{id: '1',  type: 'gear', label: '1',  selected: false},
-			{id: '2',  type: 'gear', label: '2',  selected: false},
-			{id: '3',  type: 'gear', label: '3',  selected: false},
-			{id: '4',  type: 'gear', label: '4',  selected: false},
-			{id: '5',  type: 'gear', label: '5',  selected: false},
-			{id: '6',  type: 'gear', label: '6',  selected: false}
-		];
+		// reset selected dice
+		for (var i = 0; i < this.gears.length; ++i) {
+			this.gears[i].selected = false;
+		}
 
-		// Get Brake Dice
-		this.brakes = [
-			{id: 'b1', type: 'brake', label: 'b', selected: false},
-			{id: 'b2', type: 'brake', label: 'b', selected: false},
-			{id: 'b3', type: 'brake', label: 'b', selected: false}
-		];
+		for (var i = 0; i < this.brakes.length; ++i) {
+			this.brakes[i].selected = false;
+		}
 
-		// Get Coast Dice
-		this.coasts = [
-			{id: 'c1', type: 'coast', label: 'c', selected: false},
-			{id: 'c2', type: 'coast', label: 'c', selected: false}
-		];
+		for (var i = 0; i < this.coasts.length; ++i) {
+			this.coasts[i].selected = false;
+		}
 
-		this.setupFocusOptions();
+		for (var i = 0; i < this.boost.length; ++i) {
+			this.boost[i].selected = false;
+		}
 	}
 
 	// submitLogEntry the turn entry to the log
@@ -370,7 +367,6 @@ export class RaceComponent implements OnInit {
 
 		try {
 			var successful = document.execCommand('copy');
-			// var msg = successful ? 'successful' : 'unsuccessful';
 
 			if (successful) {
 				alert('Race Log copied to clipboard!');
@@ -383,41 +379,14 @@ export class RaceComponent implements OnInit {
 
 	// initialise app
 	ngOnInit() {
-		$(document).foundation();
+		//$(document).foundation();
 
 		if (this.localstorage.isSaved()) {
 			this.loadRace();
+			this.resetTurn();
 		} else {
-			this.race = {
-				details: {
-					name: '',
-					special: '',
-					class: CarClass.gt6,
-					weather: Weather.wet,
-					tyres: Tyres.wet,
-					pitStops: PitStops.false,
-					isgoytra: {spareTyre: false}
-				},
-				dashboard: {
-					class: this.race.details.class,
-					gears: 6,
-					brakes: 3,
-					coasts: 2,
-					tyres: this.race.details.tyres,
-					focusTokens: 0,
-					gearDamage: 0,
-					brakeDamage: 0,
-					coastDamage: 0,
-					gear: '0',
-					totalTime: 0
-				},
-				log: []
-			}
-			this.logOutput = '';
+			this.router.navigate(['/', 'welcome']);
 		}
-
-		
-		this.resetTurn();
 
   	}
 

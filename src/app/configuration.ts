@@ -1,24 +1,4 @@
-export interface Dashboard {
-	class: string,
-	gears: number,
-	brakes: number,
-	coasts: number,
-	tyres: string,
-	focusTokens: number,
-	gearDamage: number,
-	brakeDamage: number,
-	coastDamage: number,
-	gear: string,
-	totalTime: number
-}
-
-export interface Dice {
-	id: string,
-	type: string,
-	label: string,
-	selected: boolean
-}
-
+import { GT4, GT5, GT6, Dice } from './carClasses';
 
 export interface Turn {
 	dice: Dice[],
@@ -54,20 +34,6 @@ export enum PitStops {
 	false = 'No'
 }
 
-export interface Race {
-	details: {
-		name: string,
-		weather: Weather,
-		special: string,
-		pitStops: PitStops,
-		class: CarClass,
-		tyres: Tyres,
-		isgoytra: {spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
-	},
-	dashboard: Dashboard,
-	log: Turn[]
-}
-
 export let timing = {
 	standardRules: {
 		'6' : 10,
@@ -96,3 +62,79 @@ export let damage = [
 	{id: 'B', label: 'Brake Damage'},
 	{id: 'C', label: 'Coast Damage'}
 ];
+
+export class Dashboard {
+	class: CarClass
+	weather: Weather
+	tyres: Tyres
+	focusTokens: number
+	gearDamage: number
+	brakeDamage: number
+	coastDamage: number
+	gear: string
+	totalTime: number
+
+	constructor (carClass:CarClass, tyres:Tyres, weather:Weather) {
+		
+		this.class 			= carClass;
+		this.tyres 			= tyres;
+		this.weather 		= weather;
+
+		this.focusTokens 	= 0;
+		this.gearDamage 	= 0;
+		this.brakeDamage 	= 0;
+		this.coastDamage 	= 0;
+		this.gear 			= '0';
+		this.totalTime 		= 0;
+
+	}
+
+	getDice(carClass:CarClass, tyres:Tyres, weather:Weather):{gears:Dice[], coasts:Dice[], brakes:Dice[], boost:Dice[]} {
+
+		let gears: Dice[];
+		let coasts: Dice[];
+		let brakes: Dice[];
+		let boosts: Dice[];
+
+		if (carClass == CarClass.gt6) {
+
+			gears  = GT6[tyres][weather].gears.dice;
+			coasts = GT6[tyres][weather].coasts.dice;
+			brakes = GT6[tyres][weather].brakes.dice;
+			boosts = GT6[tyres][weather].boost.dice;
+
+		} else if (carClass == CarClass.gt5) {
+
+			gears  = GT5[tyres][weather].gears.dice;
+			coasts = GT5[tyres][weather].coasts.dice;
+			brakes = GT5[tyres][weather].brakes.dice;
+			boosts = GT5[tyres][weather].boost.dice;
+
+		} else if (carClass == CarClass.gt4) {
+
+			gears  = GT4[tyres][weather].gears.dice;
+			coasts = GT4[tyres][weather].coasts.dice;
+			brakes = GT4[tyres][weather].brakes.dice;
+			boosts = GT4[tyres][weather].boost.dice;
+
+		}
+
+		return {gears:gears, coasts:coasts, brakes:brakes, boost:boosts};
+	}
+}
+
+export interface Race {
+	details: {
+		name: string,
+		weather: Weather,
+		special: string,
+		pitStops: PitStops,
+		class: CarClass,
+		tyres: Tyres,
+		isgoytra: {spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
+	},
+	dashboard: Dashboard,
+	log: Turn[]
+}
+
+

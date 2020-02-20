@@ -1,8 +1,7 @@
 
 <div class="grid-container screen-light">
-<!--   <div class="grid-x grid-padding-x">
- -->
-    <p>Gear: {{race.dashboard.gear}} | Focus Tokens: {{race.dashboard.focusTokens}} | Gear Damage: {{race.dashboard.gearDamage}} | Brake Damage: {{race.dashboard.brakeDamage}} | Coast Damage: {{race.dashboard.coastDamage}}</p>
+
+    <p>Class: {{race.dashboard.class}} | Gear: {{race.dashboard.gear}} | Focus Tokens: {{race.dashboard.focusTokens}} | Gear Damage: {{race.dashboard.gearDamage}} | Brake Damage: {{race.dashboard.brakeDamage}} | Coast Damage: {{race.dashboard.coastDamage}}</p>
 
     <div class="grid-x grid-padding-x">
       <div *ngFor="let gear of gears" class="cell shrink">
@@ -14,13 +13,13 @@
       <div *ngFor="let coast of coasts" class="cell shrink">
         <button class="button coast die digit" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)">{{coast.label}}</button>
       </div>
+      <div *ngFor="let boostDice of boost" class="cell shrink">
+        <button class="button boost die digit" type="button" [ngClass]="{'selected':boostDice.selected}" (click)="dieSelected(boostDice)">{{boostDice.label}}</button>
+      </div>
     </div>
 
     <label for="focus">Focus:</label>
     <div class="grid-x grid-padding-x">
-      <!-- <div class="cell auto">
-        <input id="focus" class="input-group-field" type="number" name="focusTokens" [disabled]="turn.flatOut" [(ngModel)]="this.turn.focus">
-      </div> -->
 
       <div class="cell auto">
         <button type="button" class="button warning expanded" [ngClass]="{'selected':turn.flatOut}" (click)="flatOut()">Flat Out!</button>
@@ -65,7 +64,7 @@
     <label>Turn:</label>
     <div class="grid-x grid-margin-x">
       <div class="cell auto">
-        <p><span>{{turn.entry}}</span><!-- <span *ngIf="!turn.flatOut && turn.focus > 0">(-{{turn.focus}})</span> --></p>
+        <p><span>{{turn.entry}}</span></p>
       </div>
     </div>
 
@@ -82,6 +81,8 @@
           {{i+1}}: {{turn.entry}}: {{formatTime(turn.time)}}<button type="button" class="remove-entry" (click)="removeLogEntry(i)"><span>&times;</span></button>
         </div>
 
+        <hr>
+
         <p>Time: <span class="digit">{{formatTime(this.race.dashboard.totalTime)}}</span></p>
         <p>Focus: {{race.dashboard.focusTokens}}</p>
         <p>Total: <span class="digit">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</span></p>
@@ -92,7 +93,6 @@
 
     </div>
 
-<!--   </div>-->
 </div>
 
 

@@ -1,12 +1,3 @@
-.bg-dark {
-	padding-top: 12px;
-	background-color: #77777750;
-}
-
-.screen-light {
-	background-color: rgba(239,236,229,0.8);
-}
-
 .log-entry {
 	display: block;
 	button {
@@ -58,6 +49,10 @@
 	&.coast {
 		background-color: #FAFAFA;
 		color: #555555;
+	}
+
+	&.boost {
+		background-color: rgba(0,160,37,1);
 	}
 	
 }

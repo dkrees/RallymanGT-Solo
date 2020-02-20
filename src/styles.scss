@@ -11,6 +11,9 @@
 // FONT
 @import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
 
+// import material design icons
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 // CUSTOM STUFF
 body {
 	background: url(./assets/images/rallymangt-bg2.png) no-repeat top center fixed; 
@@ -20,16 +23,12 @@ body {
 	background-size: cover;
 }
 
-// .grid-container {
-// 	max-width: 800px;
-// }
 
-// $grid-container: 400px;
+.bg-dark {
+	padding-top: 12px;
+	background-color: #77777750;
+}
 
-// $foundation-palette: (
-//   primary: #1779ba,
-//   secondary: #767676,
-//   success: red,
-//   warning: #ffae00,
-//   alert: #cc4b37,
-// );
+.screen-light {
+	background-color: rgba(239,236,229,0.8);
+}

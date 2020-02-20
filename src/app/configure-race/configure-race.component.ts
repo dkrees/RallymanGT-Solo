@@ -1,4 +1,4 @@
-import { Component, OnInit } 	from '@angular/core';
+import { Component } 			from '@angular/core';
 import { FormBuilder } 			from "@angular/forms";
 import { Router } 				from '@angular/router';
 import { Dashboard, Turn, Race, Weather, CarClass, Tyres, PitStops } from '../configuration';
@@ -9,62 +9,26 @@ import { LocalstorageService } 	from '../localstorage.service';
 	templateUrl: './configure-race.component.html',
 	styleUrls: ['./configure-race.component.scss']
 })
-export class ConfigureRaceComponent implements OnInit {
+export class ConfigureRaceComponent {
 
-	constructor(private localstorage: LocalstorageService, public fb: FormBuilder, private router: Router) {}
+	constructor(private localstorage: LocalstorageService, public fb: FormBuilder, private router: Router) {
 
-	race: Race;
-	raceDetailsForm;
-	
-	cancelForm() {
-		this.router.navigate(['/', 'welcome']);
-	}
-
-	// Submit Race Details Form
-	saveDetails() {
-
-		this.race.details = {
-			name: 		this.raceDetailsForm.value.name,
-			special: 	this.raceDetailsForm.value.special,
-			class: 		this.raceDetailsForm.value.class,
-			weather: 	this.raceDetailsForm.value.weather,
-			tyres: 		this.raceDetailsForm.value.tyres,
-			pitStops: 	this.raceDetailsForm.value.pits,
-			isgoytra: 	{spareTyre: this.raceDetailsForm.value.isgoytra} 	
-		}
-
-		this.localstorage.save(this.race);
-		this.router.navigate(['/', 'race']);
-	}  
-
-	ngOnInit() {
+		// DEFAULTS
+		this.setup = new Dashboard(CarClass.gt6, Tyres.asphalt, Weather.dry);
 
 		this.race = {
 			details: {
 				name: '',
 				special: '',
-				class: CarClass.gt6,
-				weather: Weather.dry,
-				tyres: Tyres.asphalt,
+				class: this.setup.class,
+				weather: this.setup.weather,
+				tyres: this.setup.tyres,
 				pitStops: PitStops.true,
-				isgoytra: {spareTyre: false}
+				isgoytra: {spareTyre:false}
 			},
-			dashboard: {
-				class: CarClass.gt6,
-				gears: 6,
-				brakes: 3,
-				coasts: 2,
-				tyres: Tyres.asphalt,
-				focusTokens: 0,
-				gearDamage: 0,
-				brakeDamage: 0,
-				coastDamage: 0,
-				gear: '0',
-				totalTime: 0
-			},
+			dashboard: this.setup,
 			log: []
 		}
-
 
 		this.raceDetailsForm = this.fb.group({
 			name: 		[this.race.details.name],
@@ -76,5 +40,39 @@ export class ConfigureRaceComponent implements OnInit {
 			isgoytra: 	[this.race.details.isgoytra.spareTyre]
 		});
 	}
+
+	setup: 	Dashboard;
+	race: 	Race;
+	raceDetailsForm;
+	
+	cancelForm() {
+		this.router.navigate(['/', 'welcome']);
+	}
+
+	// Submit Race Details Form
+	saveDetails() {
+
+		// Update the dashboard setup
+		this.setup.class   = this.raceDetailsForm.value.class
+		this.setup.weather = this.raceDetailsForm.value.weather
+		this.setup.tyres   = this.raceDetailsForm.value.tyres
+
+		this.race = {
+			details: {
+				name: 		this.raceDetailsForm.value.name,
+				special: 	this.raceDetailsForm.value.special,
+				class: 		this.raceDetailsForm.value.class,
+				weather: 	this.raceDetailsForm.value.weather,
+				tyres: 		this.raceDetailsForm.value.tyres,
+				pitStops: 	this.raceDetailsForm.value.pits,
+				isgoytra: 	{spareTyre: this.raceDetailsForm.value.isgoytra}
+			},
+			dashboard: this.setup,
+			log: []
+		}
+
+		this.localstorage.save(this.race);
+		this.router.navigate(['/', 'race']);
+	}  
 
 }
