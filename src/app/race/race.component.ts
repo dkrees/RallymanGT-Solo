@@ -26,6 +26,14 @@ export class RaceComponent implements OnInit {
 // Save races?
 
 
+// change "save" to "start"
+// Spent focus not resetting after submit.
+// move focus set up (and other things) to constructor function
+// prevent page zoom on mobile
+
+// Add Specials to a race 
+
+
 	constructor(private localstorage: LocalstorageService, private router: Router) {}
 
 	gears:  	Dice[];
@@ -40,7 +48,14 @@ export class RaceComponent implements OnInit {
 	spendFocus;
 	spendFocusOptions;
 
-	setupFocusOptions() {
+	// ==========================================
+	// FOCUS
+	resetFocusSpend():void {
+		// reset the focus spend options to none
+		this.spendFocus = this.spendFocusOptions[0].value;
+	}
+
+	setupFocusOptions():void {
 		this.spendFocusOptions = [];
 		let n = 0;
 		for (var i = 0; i < this.gears.length + this.brakes.length + this.coasts.length + this.boost.length; ++i) {
@@ -49,9 +64,17 @@ export class RaceComponent implements OnInit {
 			this.spendFocusOptions.push({label: label, value: n});
 		}
 
-		this.spendFocus = this.spendFocusOptions[0].value;
+		this.resetFocusSpend();
 	}
 
+	focusSpentSelect(focusSpent):void {
+		this.turn.focus = focusSpent;
+		this.entry();
+	}
+	// ==========================================
+
+	// ==========================================
+	// LOCAL STORAGE
 	// Save log to local storage
 	saveRace(race:Race):void {
 		this.localstorage.save(race);
@@ -73,6 +96,8 @@ export class RaceComponent implements OnInit {
 		this.totalTime();
 		this.output();
 	}
+	// ==========================================
+
 
 	gainFocus():number {
 		let focusGained = 0;
@@ -189,9 +214,6 @@ export class RaceComponent implements OnInit {
 	// going flat out!
 	flatOut():void {
 
-		// reset the focus spend options to none
-		this.spendFocus = this.spendFocusOptions[0].value;
-
 		this.turn.flatOut = !this.turn.flatOut;
 		if (this.turn.flatOut){
 			let focus = 0;
@@ -207,11 +229,6 @@ export class RaceComponent implements OnInit {
 			this.turn.focus = 0;
 		}
 
-		this.entry();
-	}
-
-	focusSpentSelect(focusSpent):void {
-		this.turn.focus = focusSpent;
 		this.entry();
 	}
 
@@ -256,6 +273,10 @@ export class RaceComponent implements OnInit {
 	
 	// Reset the turn object for a new turn
 	resetTurn():void {
+
+		// reset the focus spend options
+		this.resetFocusSpend();
+
 		this.turn = {
 			dice: [],
 			loc: false,
@@ -288,6 +309,8 @@ export class RaceComponent implements OnInit {
 		for (var i = 0; i < this.boost.length; ++i) {
 			this.boost[i].selected = false;
 		}
+
+		
 	}
 
 	// submitLogEntry the turn entry to the log
@@ -377,7 +400,7 @@ export class RaceComponent implements OnInit {
 		}
 	}
 
-	// initialise app
+	// Initialise app
 	ngOnInit() {
 		//$(document).foundation();
 
