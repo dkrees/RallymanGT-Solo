@@ -5,10 +5,10 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { ConfigureRaceComponent } from './configure-race/configure-race.component'; 
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/welcome', pathMatch: 'full' },
 	{ path: 'race', component: RaceComponent },
 	{ path: 'welcome', component: WelcomeComponent },
-	{ path: 'configure-race', component: ConfigureRaceComponent }
+	{ path: 'configure-race', component: ConfigureRaceComponent },
+	{ path: '', redirectTo: '/welcome', pathMatch: 'full' }
 ];
 
 @NgModule({

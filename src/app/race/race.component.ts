@@ -71,6 +71,19 @@ export class RaceComponent implements OnInit {
 		this.turn.focus = focusSpent;
 		this.entry();
 	}
+
+	gainFocus():number {
+		let focusGained = 0;
+
+		for (var i = 0; i < this.turn.dice.length; ++i) {
+
+			// add focus if its not a braking die
+			if (this.turn.dice[i].type !== DiceType.brake) {
+				focusGained++;
+			}			
+		}
+		return focusGained;
+	}
 	// ==========================================
 
 	// ==========================================
@@ -98,21 +111,7 @@ export class RaceComponent implements OnInit {
 	}
 	// ==========================================
 
-
-	gainFocus():number {
-		let focusGained = 0;
-
-		for (var i = 0; i < this.turn.dice.length; ++i) {
-
-			// add focus if its not a braking die
-			if (this.turn.dice[i].type !== DiceType.brake) {
-				focusGained++;
-			}			
-		}
-
-		return focusGained;
-	}
-
+	// TURN ENTRY
 	// update the turn log entry
 	entry():void {
 		this.turn.entry = '';
@@ -120,8 +119,8 @@ export class RaceComponent implements OnInit {
 		for (var i = 0; i < this.turn.dice.length; ++i) {
 			this.turn.entry = this.turn.entry.concat(this.turn.dice[i].label);
 
-			// set turns gear if its not coasting or braking
-			if (this.turn.dice[i].type !== DiceType.brake && this.turn.dice[i].type !== DiceType.coast) {
+			// set turns gear only if its a gear die
+			if (this.turn.dice[i].type == DiceType.gear) {
 				this.turn.gear = this.turn.dice[i].label;
 			}			
 		}
