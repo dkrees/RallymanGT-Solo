@@ -1,6 +1,7 @@
 import { Component, OnInit } 	from '@angular/core';
 import { Router } 				from '@angular/router';
 import * as moment 				from 'moment';
+import { Angulartics2 } 		from 'angulartics2';
 import { DiceType, Dice } 		from '../carClasses';
 import { Dashboard, Turn, Race, timing, damage, Weather, CarClass, Tyres, PitStops } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
@@ -34,7 +35,7 @@ export class RaceComponent implements OnInit {
 // Add Specials to a race 
 
 
-	constructor(private localstorage: LocalstorageService, private router: Router) {}
+	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService, private router: Router) {}
 
 	gears:  	Dice[];
 	brakes: 	Dice[];
@@ -47,6 +48,20 @@ export class RaceComponent implements OnInit {
 
 	spendFocus;
 	spendFocusOptions;
+
+	// ==========================================
+	// METRICS
+	metrics(action:string):void {
+		this.angulartics2.eventTrack.next({ 
+			action: action,
+			properties: { 
+				category: this.race.details.class, 
+				label: this.race.details.isgoytra.spareTyre.toString(),
+			},
+		});
+	}
+	// ==========================================
+
 
 	// ==========================================
 	// FOCUS
@@ -105,6 +120,8 @@ export class RaceComponent implements OnInit {
 		this.coasts = availableDice.coasts;
 		this.boost  = availableDice.boost;
 		
+		this.metrics('load race');
+
 		this.setupFocusOptions();
 		this.totalTime();
 		this.output();
@@ -310,6 +327,8 @@ export class RaceComponent implements OnInit {
 		// update the entry once more
 		this.entry();
 
+		this.metrics('submit entry');
+
 		// update the race log
 		this.race.log.push(this.turn);
 
@@ -375,6 +394,8 @@ export class RaceComponent implements OnInit {
 
 	// Copy Race log to clipboard
 	copyOutput(outputElement):void {
+
+		this.metrics('copy output');
 
 		outputElement.focus();
 		outputElement.select();

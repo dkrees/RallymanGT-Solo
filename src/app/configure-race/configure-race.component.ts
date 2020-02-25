@@ -1,6 +1,7 @@
-import { Component } 			from '@angular/core';
+import { Component, OnInit } 			from '@angular/core';
 import { FormBuilder } 			from "@angular/forms";
 import { Router } 				from '@angular/router';
+import { Angulartics2 } 		from 'angulartics2';
 import { Dashboard, Turn, Race, Weather, CarClass, Tyres, PitStops } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
 
@@ -9,9 +10,9 @@ import { LocalstorageService } 	from '../localstorage.service';
 	templateUrl: './configure-race.component.html',
 	styleUrls: ['./configure-race.component.scss']
 })
-export class ConfigureRaceComponent {
+export class ConfigureRaceComponent implements OnInit {
 
-	constructor(private localstorage: LocalstorageService, public fb: FormBuilder, private router: Router) {
+	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService, public fb: FormBuilder, private router: Router) {
 
 		// DEFAULTS
 		this.setup = new Dashboard(CarClass.gt6, Tyres.asphalt, Weather.dry);
@@ -44,8 +45,22 @@ export class ConfigureRaceComponent {
 	setup: 	Dashboard;
 	race: 	Race;
 	raceDetailsForm;
+
+	// ==========================================
+	// METRICS
+	metrics(action:string):void {
+		this.angulartics2.eventTrack.next({ 
+			action: action,
+			properties: { 
+				category: this.race.details.class, 
+				label: this.race.details.isgoytra.spareTyre.toString(),
+			},
+		});
+	}
+	// ==========================================
 	
 	cancelForm() {
+		this.metrics('cancel new race');
 		this.router.navigate(['/', 'welcome']);
 	}
 
@@ -71,8 +86,15 @@ export class ConfigureRaceComponent {
 			log: []
 		}
 
+		this.metrics('save new race');
 		this.localstorage.save(this.race);
 		this.router.navigate(['/', 'race']);
-	}  
+	}
+
+	// Initialise app
+	ngOnInit() {
+		this.metrics('create new race');
+
+  	}
 
 }

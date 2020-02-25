@@ -1,4 +1,5 @@
 import { Component, OnInit } 	from '@angular/core';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { LocalstorageService } 	from './localstorage.service';
 
 
@@ -12,7 +13,9 @@ declare var $:any
 
 export class AppComponent implements OnInit {
 
-	constructor(private localstorage: LocalstorageService) {}
+	constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics, private localstorage: LocalstorageService) {
+		angulartics2GoogleAnalytics.startTracking();
+	}
 
 	title = 'Rallyman GT Solo'
 
