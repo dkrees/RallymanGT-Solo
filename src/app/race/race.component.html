@@ -73,44 +73,54 @@
     <div class="cell auto">
       <p><strong>{{turn.entry}}</strong></p>
     </div>
-  </div>
-
-  <div class="grid-x grid-padding-x">
-    <div class="cell auto">
+    <div class="cell small-6">
       <input type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">
     </div>
   </div>
 
+  <hr>
+
+<!--   <div class="grid-x grid-padding-x">
+    <div class="cell auto">
+      <input type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">
+    </div>
+  </div> -->
+
   <div class="grid-x grid-padding-x" *ngFor="let turn of race.log; let i = index">
-    <div class="cell small-3">Turn {{i+1}}:</div>
-    <div class="cell small-5">{{turn.entry}}</div>
-    <div class="cell small-2 digit">{{formatTime(turn.time)}}</div>
-    <div class="cell small-2 text-center" (click)="removeLogEntry(i)"><span>&times;</span></div>
+    <div class="cell small-3 medium-1">Turn {{i+1}}:</div>
+    <div class="cell small-5 medium-2">{{turn.entry}}</div>
+    <div class="cell small-2 medium-2 digit">{{formatTime(turn.time)}}</div>
+    <div class="cell small-2 medium-1 text-center" (click)="removeLogEntry(i)"><span>&times;</span></div>
   </div>
     
   <hr>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell small-8">Time:</div>
-    <div class="cell small-4"><span class="digit">{{formatTime(this.race.dashboard.totalTime)}}</span></div>
+    <div class="cell small-8 medium-3">Time:</div>
+    <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.dashboard.totalTime)}}</span></div>
   </div>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell small-8">Focus:</div>
-    <div class="cell small-4"><span class="digit">{{race.dashboard.focusTokens}}</span></div>
+    <div class="cell small-8 medium-3">Focus:</div>
+    <div class="cell small-4 medium-3"><span class="digit">{{race.dashboard.focusTokens}}</span></div>
   </div>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell small-8">Total:</div>
-    <div class="cell small-4"><span class="digit">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</span></div>
+    <div class="cell small-8 medium-3">Total:</div>
+    <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</span></div>
   </div>
 
+  <label>Log Output:</label>
   <div class="grid-x grid-padding-x">
     <div class="cell auto">
       <textarea #output>{{logOutput}}</textarea>
       <button type="button" class="button secondary hollow" (click)="copyOutput(output)">Copy</button>
     </div>
   </div>
+
+  <hr>
+
+  <small>Made for the Fans of Rallyman GT, by a fan of Rallyman GT</small>
 
 </div>
 

@@ -23,7 +23,7 @@ export class ConfigureRaceComponent {
 				class: this.setup.class,
 				weather: this.setup.weather,
 				tyres: this.setup.tyres,
-				pitStops: PitStops.true,
+				pitStops: PitStops.false,
 				isgoytra: {spareTyre:false}
 			},
 			dashboard: this.setup,

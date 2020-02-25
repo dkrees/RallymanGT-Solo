@@ -77,8 +77,8 @@ export class RaceComponent implements OnInit {
 
 		for (var i = 0; i < this.turn.dice.length; ++i) {
 
-			// add focus if its not a braking die
-			if (this.turn.dice[i].type !== DiceType.brake) {
+			// add focus only if its a gear or coast die
+			if (this.turn.dice[i].type == DiceType.gear || this.turn.dice[i].type == DiceType.coast) {
 				focusGained++;
 			}			
 		}
@@ -215,15 +215,7 @@ export class RaceComponent implements OnInit {
 
 		this.turn.flatOut = !this.turn.flatOut;
 		if (this.turn.flatOut){
-			let focus = 0;
-
-			// only gain focus tokens for non brake dice
-			for (var i = 0; i < this.turn.dice.length; ++i) {
-				if (this.turn.dice[i].type != DiceType.brake) {
-					focus++;
-				}
-			}
-			this.turn.focus = focus;
+			this.turn.focus = this.gainFocus();
 		} else {
 			this.turn.focus = 0;
 		}
