@@ -21,15 +21,12 @@ export class RaceComponent implements OnInit {
 // ==============================================
 // braking to reduce gear automatically?
 // validation?
-// pitting to chnage tyres/remove damage
+// Weather change 
+// pitting to change tyres/remove damage
+// break up turn entry based on the action?
 
-// Output log short/long hand and total time
 // Save races?
 
-
-// change "save" to "start"
-// Spent focus not resetting after submit.
-// move focus set up (and other things) to constructor function
 // prevent page zoom on mobile
 
 // Add Specials to a race 
@@ -51,6 +48,7 @@ export class RaceComponent implements OnInit {
 
 	// ==========================================
 	// METRICS
+	// ==========================================
 	metrics(action:string):void {
 		this.angulartics2.eventTrack.next({ 
 			action: action,
@@ -60,11 +58,10 @@ export class RaceComponent implements OnInit {
 			},
 		});
 	}
-	// ==========================================
-
 
 	// ==========================================
 	// FOCUS
+	// ==========================================
 	resetFocusSpend():void {
 		// reset the focus spend options to none
 		this.spendFocus = this.spendFocusOptions[0].value;
@@ -99,10 +96,11 @@ export class RaceComponent implements OnInit {
 		}
 		return focusGained;
 	}
-	// ==========================================
+	
 
 	// ==========================================
 	// LOCAL STORAGE
+	// ==========================================
 	// Save log to local storage
 	saveRace(race:Race):void {
 		this.localstorage.save(race);
@@ -113,12 +111,14 @@ export class RaceComponent implements OnInit {
 		this.race = this.localstorage.load();
 		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
 
-		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
+		// let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
 
-		this.gears  = availableDice.gears;
-		this.brakes = availableDice.brakes;
-		this.coasts = availableDice.coasts;
-		this.boost  = availableDice.boost;
+		// this.gears  = availableDice.gears;
+		// this.brakes = availableDice.brakes;
+		// this.coasts = availableDice.coasts;
+		// this.boost  = availableDice.boost;
+
+		this.getDicePool();
 		
 		this.metrics('load race');
 
@@ -126,9 +126,11 @@ export class RaceComponent implements OnInit {
 		this.totalTime();
 		this.output();
 	}
-	// ==========================================
+	
 
+	// ==========================================
 	// TURN ENTRY
+	// ==========================================
 	// update the turn log entry
 	entry():void {
 		this.turn.entry = '';
@@ -184,15 +186,26 @@ export class RaceComponent implements OnInit {
 			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
 		}
 
+		// weather change
+		if (this.turn.weatherChange) {
+			this.turn.entry = this.turn.entry.concat('[' + this.race.dashboard.weather + ']');
+		}
+
+
 		// apply timing with this turns gear
 		if (this.race.details.isgoytra.spareTyre) {
 			this.turn.time = timing.isgoytraRules[this.turn.gear];
 		} else {
 			this.turn.time = timing.standardRules[this.turn.gear];
 		}
+
+
 		
 	}
 
+	// ==========================================
+	// TIME FORMATTING
+	// ==========================================
 	formatTime(seconds:number):string {
 
 		let minuteValue = Math.floor(seconds/60);
@@ -213,6 +226,36 @@ export class RaceComponent implements OnInit {
 		this.race.dashboard.totalTime = time;
 	}
 
+	// ==========================================
+	// DICE
+	// ==========================================
+	getDicePool():void {
+		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
+		this.gears  = availableDice.gears;
+		this.brakes = availableDice.brakes;
+		this.coasts = availableDice.coasts;
+		this.boost  = availableDice.boost;
+
+		for (var i = 0; i < this.gears.length; ++i) {
+			this.gears[i].selected = false;
+		}
+
+		for (var i = 0; i < this.brakes.length; ++i) {
+			this.brakes[i].selected = false;
+		}
+
+		for (var i = 0; i < this.coasts.length; ++i) {
+			this.coasts[i].selected = false;
+		}
+
+		for (var i = 0; i < this.boost.length; ++i) {
+			this.boost[i].selected = false;
+		}
+
+
+	}
+
+
 	// select a gear
 	dieSelected(die:Dice):void {
 		die.selected = !die.selected;
@@ -227,6 +270,9 @@ export class RaceComponent implements OnInit {
 		this.entry();
 	}
 
+	// ==========================================
+	// FLAT OUT
+	// ==========================================
 	// going flat out!
 	flatOut():void {
 
@@ -240,6 +286,9 @@ export class RaceComponent implements OnInit {
 		this.entry();
 	}
 
+	// ==========================================
+	// LOSS OF CONTROL
+	// ==========================================
 	// oops. loss of control!
 	lossOfControl(loc:string):void {
 		this.turn.loc = !this.turn.loc;
@@ -252,6 +301,9 @@ export class RaceComponent implements OnInit {
 		this.entry();
 	}
 
+	// ==========================================
+	// ADD DAMAGE
+	// ==========================================
 	// add damage from damage tokens
 	addDamage(type):void {
 		switch (type) {
@@ -279,6 +331,9 @@ export class RaceComponent implements OnInit {
 		this.entry();
 	}
 	
+	// ==========================================
+	// RESET TURN
+	// ==========================================
 	// Reset the turn object for a new turn
 	resetTurn():void {
 
@@ -298,29 +353,17 @@ export class RaceComponent implements OnInit {
 			},
 			time: 0,
 			entry: '',
-			gear: this.race.dashboard.gear
+			gear: this.race.dashboard.gear,
+			weatherChange: false
 		};
 
-		// reset selected dice
-		for (var i = 0; i < this.gears.length; ++i) {
-			this.gears[i].selected = false;
-		}
-
-		for (var i = 0; i < this.brakes.length; ++i) {
-			this.brakes[i].selected = false;
-		}
-
-		for (var i = 0; i < this.coasts.length; ++i) {
-			this.coasts[i].selected = false;
-		}
-
-		for (var i = 0; i < this.boost.length; ++i) {
-			this.boost[i].selected = false;
-		}
-
+		this.getDicePool();
 		
 	}
 
+	// ==========================================
+	// LOG ENTRY
+	// ==========================================
 	// submitLogEntry the turn entry to the log
 	submitLogEntry():void {
 
@@ -370,6 +413,17 @@ export class RaceComponent implements OnInit {
 		// find the last gear entry (regardless which entry was deleted)
 		this.race.dashboard.gear = this.race.log[this.race.log.length-1].gear;
 
+		// find the lastest weather condition
+		if (deletedEntry[0].weatherChange) {
+			// switch the weather dashboard
+			if (this.race.dashboard.weather == Weather.dry) {
+				this.race.dashboard.weather = Weather.wet;
+			} else if (this.race.dashboard.weather == Weather.wet) {
+				this.race.dashboard.weather = Weather.dry;
+			}
+			this.getDicePool();
+		}
+
 		this.saveRace(this.race);
 		this.output();
 	}
@@ -408,13 +462,36 @@ export class RaceComponent implements OnInit {
 			}
 			
 		} catch (err) {
-			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CNTRL (CMD on Mac) + "C"');
+			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CTRL (CMD on Mac) + "C"');
 		}
 	}
 
-	// Initialise app
+	// ==========================================
+	// WEATHER CHANGE
+	// ==========================================
+
+	weatherChange():void {
+
+		this.metrics('weather change');
+
+		this.turn.weatherChange = !this.turn.weatherChange;
+
+		// switch the weather dashboard
+		if (this.race.dashboard.weather == Weather.dry) {
+			this.race.dashboard.weather = Weather.wet;
+		} else if (this.race.dashboard.weather == Weather.wet) {
+			this.race.dashboard.weather = Weather.dry;
+		}
+
+		this.entry();
+
+	}
+
+
+	// ==========================================
+	// INIT APP
+	// ==========================================
 	ngOnInit() {
-		//$(document).foundation();
 
 		if (this.localstorage.isSaved()) {
 			this.loadRace();

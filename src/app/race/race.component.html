@@ -11,20 +11,20 @@
     </div>
   </div>
 
-  <p>Class: {{race.dashboard.class}} | Gear: {{race.dashboard.gear}} | Focus Tokens: {{race.dashboard.focusTokens}} | Gear Damage: {{race.dashboard.gearDamage}} | Brake Damage: {{race.dashboard.brakeDamage}} | Coast Damage: {{race.dashboard.coastDamage}}</p>
+  <p>Class: {{race.dashboard.class}} | Gear: {{race.dashboard.gear}} | Focus Tokens: {{race.dashboard.focusTokens}} | Gear Damage: {{race.dashboard.gearDamage}} | Brake Damage: {{race.dashboard.brakeDamage}} | Coast Damage: {{race.dashboard.coastDamage}} | Weather: {{race.dashboard.weather}}</p>
 
   <div class="grid-x grid-padding-x">
     <div *ngFor="let gear of gears" class="cell shrink">
-      <button class="button gear die digit" type="button" [ngClass]="{'selected':gear.selected}" [class]="'g'+gear.label"  (click)="dieSelected(gear)">{{gear.label}}</button>
+      <button class="button gear die digit" type="button" [ngClass]="{'selected':gear.selected}" [class]="'g'+gear.label" (click)="dieSelected(gear)">{{gear.label}}</button>
     </div>
      <div *ngFor="let brake of brakes" class="cell shrink">
-      <button class="button brake die digit" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)">{{brake.label}}</button>
+      <button class="button brake die digit" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)"></button>
     </div>
     <div *ngFor="let coast of coasts" class="cell shrink">
-      <button class="button coast die digit" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)">{{coast.label}}</button>
+      <button class="button coast die digit" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)"></button>
     </div>
     <div *ngFor="let boostDice of boost" class="cell shrink">
-      <button class="button boost die digit" type="button" [ngClass]="{'selected':boostDice.selected}" (click)="dieSelected(boostDice)">{{boostDice.label}}</button>
+      <button class="button boost die digit" type="button" [ngClass]="{'selected':boostDice.selected}" (click)="dieSelected(boostDice)"></button>
     </div>
   </div>
 
@@ -41,14 +41,26 @@
     </div>
   </div>
 
-
-  <label>Loss Of Control:</label>
   <div class="grid-x grid-padding-x">
-    <div class="cell auto">
-      <button type="button" class="button alert expanded digit" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
+    <div class="cell small-6">
+      <label>Loss Of Control:</label>
+      <div class="grid-x grid-padding-x">
+        <div class="cell auto">
+          <button type="button" class="button alert expanded digit" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
+        </div>
+        <div class="cell auto">
+          <button type="button" class="button alert expanded digit" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
+        </div>
+      </div>
     </div>
-    <div class="cell auto">
-      <button type="button" class="button alert expanded digit" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
+    <div class="cell small-6">
+      <label>Weather Change:</label>
+      <div class="grid-x grid-padding-x">
+        <div class="cell auto">
+          <!-- <input type="image" src="../../assets/images/weather-change-token.png" id="weather-change" alt="Weather Change" class="token" (click)="weatherChange()"> -->
+          <input type="button" class="button expanded" value="Weather Change" (click)="weatherChange()">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -74,23 +86,17 @@
       <p><strong>{{turn.entry}}</strong></p>
     </div>
     <div class="cell small-6">
-      <input type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">
+      <button type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">Submit</button>
     </div>
   </div>
 
   <hr>
 
-<!--   <div class="grid-x grid-padding-x">
-    <div class="cell auto">
-      <input type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">
-    </div>
-  </div> -->
-
   <div class="grid-x grid-padding-x" *ngFor="let turn of race.log; let i = index">
     <div class="cell small-3 medium-1">Turn {{i+1}}:</div>
     <div class="cell small-5 medium-2">{{turn.entry}}</div>
     <div class="cell small-2 medium-2 digit">{{formatTime(turn.time)}}</div>
-    <div class="cell small-2 medium-1 text-center" (click)="removeLogEntry(i)"><span>&times;</span></div>
+    <div class="cell small-2 medium-1 text-center" [hidden]="i != race.log.length-1" (click)="removeLogEntry(i)"><span>&times;</span></div>
   </div>
     
   <hr>

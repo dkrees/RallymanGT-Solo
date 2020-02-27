@@ -4,6 +4,9 @@
 	border: none;
 	color: #FFFFFF;
 
+	min-width: 36px;
+	min-height: 36px;
+
 	-webkit-box-shadow: 0 3px 6px #222222;
 	-moz-box-shadow: 0 3px 6px #222222;
 	box-shadow: 0 3px 6px #222222;
@@ -61,6 +64,11 @@
 	font-family: 'Fira Code', monospace;
 	font-weight: bold; 
 	// font-style: italic;  
+}
+
+#weather-change {
+	max-width: 48px;
+	max-height: 48px;
 }
 
 textarea {

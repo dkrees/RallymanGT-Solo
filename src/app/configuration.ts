@@ -1,15 +1,16 @@
 import { GT4, GT5, GT6, Dice } from './carClasses';
 
 export interface Turn {
-	dice: Dice[],
-	loc: boolean,
-	locGear: string,
-	flatOut: boolean,
-	focus: number,
-	damage: {gear:number, brake: number, coast:number},
-	time: number,
-	entry: string,
-	gear: string
+	dice: 			Dice[],
+	loc: 			boolean,
+	locGear: 		string,
+	flatOut: 		boolean,
+	focus: 			number,
+	damage: 		{gear:number, brake: number, coast:number},
+	time: 			number,
+	entry: 			string,
+	gear: 			string,
+	weatherChange: 	boolean
 }
 
 export enum Weather {
@@ -64,15 +65,15 @@ export let damage = [
 ];
 
 export class Dashboard {
-	class: CarClass
-	weather: Weather
-	tyres: Tyres
-	focusTokens: number
-	gearDamage: number
-	brakeDamage: number
-	coastDamage: number
-	gear: string
-	totalTime: number
+	class: 			CarClass;
+	weather: 		Weather;
+	tyres: 			Tyres;
+	focusTokens: 	number;
+	gearDamage: 	number;
+	brakeDamage: 	number;
+	coastDamage: 	number;
+	gear: 			string;
+	totalTime: 		number;
 
 	constructor (carClass:CarClass, tyres:Tyres, weather:Weather) {
 		
@@ -125,16 +126,16 @@ export class Dashboard {
 
 export interface Race {
 	details: {
-		name: string,
-		weather: Weather,
-		special: string,
-		pitStops: PitStops,
-		class: CarClass,
-		tyres: Tyres,
-		isgoytra: {spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
+		name: 		string,
+		weather: 	Weather,
+		special: 	string,
+		pitStops: 	PitStops,
+		class: 		CarClass,
+		tyres: 		Tyres,
+		isgoytra: 	{spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
 	},
-	dashboard: Dashboard,
-	log: Turn[]
+	dashboard: 		Dashboard,
+	log: 			Turn[]
 }
 
 
