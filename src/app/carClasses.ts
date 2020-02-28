@@ -1,5 +1,5 @@
 export enum DiceType {
-	gear = 'gear',
+	gear  = 'gear',
 	coast = 'coast',
 	brake = 'brake',
 	boost = 'boost'
@@ -19,7 +19,8 @@ class DiceBuilder {
 
 	constructor(count:number, name:DiceType, label?:string) {
 		for (var i = 0; i < count; ++i) {
-			this.dice.push({id: name  + i.toString(), type: name, label: label ? label : i.toString(),  selected: false});
+			let n = i + 1;
+			this.dice.push({id: name  + n.toString(), type: name, label: label ? label : n.toString(),  selected: false});
 		}
 	}
 
@@ -30,43 +31,43 @@ class DiceBuilder {
 
 
 export const GT6 = {
-	Asphalt: {
-		Dry: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+	asphalt: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		}
 	},
-	Wet: {
-		Dry: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+	rain: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		}
 	},
-	Soft: {
-		Dry: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+	soft: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(7, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
@@ -75,43 +76,43 @@ export const GT6 = {
 }
 
 export const GT5 = {
-	Asphalt: {
-		Dry: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+	asphalt: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
 		}
 	},
-	Wet: {
-		Dry: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+	rain: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
 		}
 	},
-	Soft: {
-		Dry: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+	soft: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(6, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
@@ -120,43 +121,43 @@ export const GT5 = {
 }
 
 export const GT4 = {
-	Asphalt: {
-		Dry: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+	asphalt: {
+		dry: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(3, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(3, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		}
 	},
-	Wet: {
-		Dry: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+	rain: {
+		dry: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(3, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		}
 	},
-	Soft: {
-		Dry: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+	soft: {
+		dry: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(3, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		},
-		Wet: {
-			gears: 	new DiceBuilder(5, DiceType.gear),
+		rain: {
+			gears: 	new DiceBuilder(4, DiceType.gear),
 			coasts: new DiceBuilder(3, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(0, DiceType.boost, 'a')

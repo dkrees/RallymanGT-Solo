@@ -3,7 +3,7 @@ import { Router } 				from '@angular/router';
 import * as moment 				from 'moment';
 import { Angulartics2 } 		from 'angulartics2';
 import { DiceType, Dice } 		from '../carClasses';
-import { Dashboard, Turn, Race, timing, damage, Weather, CarClass, Tyres, PitStops } from '../configuration';
+import { Dashboard, Turn, Race, timing, damage, Weather, CarClass, Tyres } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
 
 //declare var $:any
@@ -21,9 +21,6 @@ export class RaceComponent implements OnInit {
 // ==============================================
 // braking to reduce gear automatically?
 // validation?
-// Weather change 
-// pitting to change tyres/remove damage
-// break up turn entry based on the action?
 
 // Save races?
 
@@ -42,6 +39,16 @@ export class RaceComponent implements OnInit {
 	race: 		Race;
 	dashboard:  Dashboard;
 	logOutput: 	string;
+
+	gear0:  Dice;
+
+	tyreOptions: Tyres[] = [
+		Tyres.asphalt,
+		Tyres.rain,
+		Tyres.soft
+	];
+
+	tyreSelect: Tyres;
 
 	spendFocus;
 	spendFocusOptions;
@@ -110,13 +117,7 @@ export class RaceComponent implements OnInit {
 	loadRace():void {
 		this.race = this.localstorage.load();
 		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
-
-		// let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
-
-		// this.gears  = availableDice.gears;
-		// this.brakes = availableDice.brakes;
-		// this.coasts = availableDice.coasts;
-		// this.boost  = availableDice.boost;
+		this.tyreSelect = this.race.dashboard.tyres;
 
 		this.getDicePool();
 		
@@ -152,18 +153,33 @@ export class RaceComponent implements OnInit {
 
 			// set gear to LOC 
 			this.turn.gear = this.turn.locGear;
+		
+		}
 
-			// show focus token adjustment in parentheses
-			if (this.turn.flatOut) {
-				this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
-			} else if (this.turn.focus != 0) {
-				this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
-			}
+		// if pit stop
+		if (this.turn.pitstop) {
+			// append pit gear to entry
+			this.turn.entry = this.turn.entry.concat(this.turn.pitGear + '');
 
-			// append the exclamation mark
+			// set gear to LOC 
+			this.turn.gear = this.turn.pitGear;
+			
+		}
+
+		// if flat out
+		if (this.turn.flatOut) {
+			// show focus token adjustment in parentheses (duplicate code above!)
+			this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
+
+		} else if (this.turn.focus != 0) {
+			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
+		}
+
+		// append Gear damage
+		if (this.turn.loc) {
+			
 			this.turn.entry = this.turn.entry.concat('!');
 
-			// append Gear damage
 			for (var i = 0; i < this.turn.damage.gear; ++i) {
 				this.turn.entry = this.turn.entry.concat('G');
 			}
@@ -177,18 +193,15 @@ export class RaceComponent implements OnInit {
 			for (var i = 0; i < this.turn.damage.coast; ++i) {
 				this.turn.entry = this.turn.entry.concat('C');
 			}
+		}
 
-		// otherwise flat out
-		} else if (this.turn.flatOut) {
-			// show focus token adjustment in parentheses (duplicate code above!)
-			this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
-		} else if (this.turn.focus != 0) {
-			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
+		if (this.turn.pitstop) {
+			this.turn.entry = this.turn.entry.concat('[pit=' + this.tyreSelect + ']');
 		}
 
 		// weather change
 		if (this.turn.weatherChange) {
-			this.turn.entry = this.turn.entry.concat('[' + this.race.dashboard.weather + ']');
+			this.turn.entry = this.turn.entry.concat('[weather=' + this.race.dashboard.weather + ']');
 		}
 
 
@@ -199,8 +212,6 @@ export class RaceComponent implements OnInit {
 			this.turn.time = timing.standardRules[this.turn.gear];
 		}
 
-
-		
 	}
 
 	// ==========================================
@@ -252,6 +263,7 @@ export class RaceComponent implements OnInit {
 			this.boost[i].selected = false;
 		}
 
+		this.gear0 =  {id: '0', type: DiceType.gear, label: '0',  selected: false}
 
 	}
 
@@ -291,6 +303,7 @@ export class RaceComponent implements OnInit {
 	// ==========================================
 	// oops. loss of control!
 	lossOfControl(loc:string):void {
+		this.metrics('loc');
 		this.turn.loc = !this.turn.loc;
 		if (this.turn.loc) {
 			this.turn.locGear = loc;
@@ -354,7 +367,9 @@ export class RaceComponent implements OnInit {
 			time: 0,
 			entry: '',
 			gear: this.race.dashboard.gear,
-			weatherChange: false
+			weatherChange: false,
+			pitstop: false,
+			pitGear: ''
 		};
 
 		this.getDicePool();
@@ -383,9 +398,22 @@ export class RaceComponent implements OnInit {
 		}
 
 		this.race.dashboard.gear = this.turn.gear;
-		this.race.dashboard.gearDamage += this.turn.damage.gear;
-		this.race.dashboard.brakeDamage += this.turn.damage.brake;
-		this.race.dashboard.coastDamage += this.turn.damage.coast;
+		
+
+		if (this.turn.pitstop) {
+
+			this.race.dashboard.tyres = this.tyreSelect;
+
+			if (this.turn.pitGear === '00') {
+				this.race.dashboard.gearDamage = 0;
+				this.race.dashboard.brakeDamage = 0;
+				this.race.dashboard.coastDamage = 0;
+			} else {
+				this.race.dashboard.gearDamage += this.turn.damage.gear;
+				this.race.dashboard.brakeDamage += this.turn.damage.brake;
+				this.race.dashboard.coastDamage += this.turn.damage.coast;
+			}
+		}
 
 		this.totalTime();
 
@@ -424,6 +452,8 @@ export class RaceComponent implements OnInit {
 			this.getDicePool();
 		}
 
+		this.totalTime();
+
 		this.saveRace(this.race);
 		this.output();
 	}
@@ -431,12 +461,14 @@ export class RaceComponent implements OnInit {
 	output():void {
 		this.logOutput = '';
 
-		this.logOutput = this.race.details.name
-			+ '\nSpecial: ' + this.race.details.special
+		this.logOutput =
+			(this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '')
+			+ (this.race.details.special ? '\n' + this.race.details.special : '')
 			+ '\nClass: ' + this.race.details.class
-			+ '\nPit Stops: ' + this.race.details.pitStops
-			+ '\nWeather: ' + this.race.details.weather
-			+ '\nTyres: ' + this.race.details.tyres
+			+ '\nPit Stops: ' + (this.race.details.pitStops ? 'Yes' : 'No')
+			+ '\nStarting Weather: ' + this.race.details.weather
+			+ '\nChangeable Weather: ' + (this.race.details.changeableWeather ? 'Yes' : 'No') 
+			+ '\nStarting Tyres: ' + this.race.details.tyres
 			+ '\n('+ this.formatTime(this.race.dashboard.totalTime) + '-' + this.formatTime(this.race.dashboard.focusTokens) + ') = ' 
 			+ this.formatTime(this.race.dashboard.totalTime - this.race.dashboard.focusTokens)
 			+ '\n';
@@ -469,9 +501,7 @@ export class RaceComponent implements OnInit {
 	// ==========================================
 	// WEATHER CHANGE
 	// ==========================================
-
 	weatherChange():void {
-
 		this.metrics('weather change');
 
 		this.turn.weatherChange = !this.turn.weatherChange;
@@ -487,6 +517,26 @@ export class RaceComponent implements OnInit {
 
 	}
 
+	// ==========================================
+	// PITSTOP
+	// ==========================================
+	pitstop(gear:string):void {
+		this.metrics('pit stop');
+
+		this.turn.pitstop = !this.turn.pitstop;
+		if (this.turn.pitstop) {
+			this.turn.pitGear = gear;
+		} else {
+			this.turn.pitGear = '';
+		}
+
+		this.entry();
+	}
+
+	tyreChange(tyres):void {
+		this.tyreSelect = tyres;
+		this.entry();
+	}
 
 	// ==========================================
 	// INIT APP

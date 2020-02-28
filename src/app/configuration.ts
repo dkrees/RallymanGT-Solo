@@ -10,12 +10,14 @@ export interface Turn {
 	time: 			number,
 	entry: 			string,
 	gear: 			string,
-	weatherChange: 	boolean
+	weatherChange: 	boolean,
+	pitstop:		boolean,
+	pitGear:		string
 }
 
 export enum Weather {
-	dry = 'Dry',
-	wet = 'Wet'
+	dry = 'dry',
+	wet = 'rain'
 }
 
 export enum CarClass {
@@ -25,15 +27,15 @@ export enum CarClass {
 }
 
 export enum Tyres {
-	soft = 'Soft',
-	asphalt = 'Asphalt',
-	wet = 'Wet'
+	soft = 'soft',
+	asphalt = 'asphalt',
+	rain = 'rain'
 }
 
-export enum PitStops {
-	true = 'Yes',
-	false = 'No'
-}
+// export enum PitStops {
+// 	true = 'Yes',
+// 	false = 'No'
+// }
 
 export let timing = {
 	standardRules: {
@@ -128,8 +130,9 @@ export interface Race {
 	details: {
 		name: 		string,
 		weather: 	Weather,
+		changeableWeather: boolean,
 		special: 	string,
-		pitStops: 	PitStops,
+		pitStops: 	boolean,
 		class: 		CarClass,
 		tyres: 		Tyres,
 		isgoytra: 	{spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds

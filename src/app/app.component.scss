@@ -1,4 +1,10 @@
 .title-bar {
 	background-color: white;
 	color: #333333;
+	height: 48px;
+
+	img {
+		margin: 6px 24px;
+		max-height: 36px;
+	}
 }

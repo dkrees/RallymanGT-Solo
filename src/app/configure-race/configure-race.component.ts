@@ -2,7 +2,7 @@ import { Component, OnInit } 			from '@angular/core';
 import { FormBuilder } 			from "@angular/forms";
 import { Router } 				from '@angular/router';
 import { Angulartics2 } 		from 'angulartics2';
-import { Dashboard, Turn, Race, Weather, CarClass, Tyres, PitStops } from '../configuration';
+import { Dashboard, Turn, Race, Weather, CarClass, Tyres } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
 
 @Component({
@@ -23,8 +23,9 @@ export class ConfigureRaceComponent implements OnInit {
 				special: '',
 				class: this.setup.class,
 				weather: this.setup.weather,
+				changeableWeather: false,
 				tyres: this.setup.tyres,
-				pitStops: PitStops.false,
+				pitStops: false,
 				isgoytra: {spareTyre:false}
 			},
 			dashboard: this.setup,
@@ -36,6 +37,7 @@ export class ConfigureRaceComponent implements OnInit {
 			special: 	[this.race.details.special],
 			class: 		[this.race.details.class],
 			weather: 	[this.race.details.weather],
+			changeableWeather: [this.race.details.changeableWeather],
 			tyres: 		[this.race.details.tyres],
 			pits: 		[this.race.details.pitStops],
 			isgoytra: 	[this.race.details.isgoytra.spareTyre]
@@ -78,6 +80,7 @@ export class ConfigureRaceComponent implements OnInit {
 				special: 	this.raceDetailsForm.value.special,
 				class: 		this.raceDetailsForm.value.class,
 				weather: 	this.raceDetailsForm.value.weather,
+				changeableWeather: this.raceDetailsForm.value.changeableWeather,
 				tyres: 		this.raceDetailsForm.value.tyres,
 				pitStops: 	this.raceDetailsForm.value.pits,
 				isgoytra: 	{spareTyre: this.raceDetailsForm.value.isgoytra}
