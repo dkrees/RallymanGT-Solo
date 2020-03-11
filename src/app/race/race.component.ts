@@ -463,7 +463,7 @@ export class RaceComponent implements OnInit {
 
 		this.logOutput =
 			(this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '')
-			+ (this.race.details.special ? '\n' + this.race.details.special : '')
+			+ (this.race.details.special ? '\nSpecial: ' + this.race.details.special : '')
 			+ '\nClass: ' + this.race.details.class
 			+ '\nPit Stops: ' + (this.race.details.pitStops ? 'Yes' : 'No')
 			+ '\nStarting Weather: ' + this.race.details.weather
