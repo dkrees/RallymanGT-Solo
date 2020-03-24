@@ -75,6 +75,51 @@ export const GT6 = {
 	}
 }
 
+export const GT6BOP = {
+	asphalt: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		}
+	},
+	rain: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(0, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		}
+	},
+	soft: {
+		dry: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(6, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		}
+	}
+}
+
 export const GT5 = {
 	asphalt: {
 		dry: {
@@ -116,6 +161,51 @@ export const GT5 = {
 			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
 			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
 			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
+		}
+	}
+}
+
+export const GT5BOP = {
+	asphalt: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
+		}
+	},
+	rain: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(1, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(2, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(1, DiceType.boost, 'a')
+		}
+	},
+	soft: {
+		dry: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(3, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
+		},
+		rain: {
+			gears: 	new DiceBuilder(5, DiceType.gear),
+			coasts: new DiceBuilder(2, DiceType.coast, 'c'),
+			brakes: new DiceBuilder(1, DiceType.brake, 'b'),
+			boost: 	new DiceBuilder(0, DiceType.boost, 'a')
 		}
 	}
 }
