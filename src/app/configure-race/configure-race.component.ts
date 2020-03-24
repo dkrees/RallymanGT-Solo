@@ -15,14 +15,13 @@ export class ConfigureRaceComponent implements OnInit {
 	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService, public fb: FormBuilder, private router: Router) {
 
 		// DEFAULTS
-		this.setup = new Dashboard(CarClass.gt6, false, Tyres.asphalt, Weather.dry);
+		this.setup = new Dashboard(CarClass.gt6, Tyres.asphalt, Weather.dry);
 
 		this.race = {
 			details: {
 				name: '',
 				special: '',
 				class: this.setup.class,
-				bop: this.setup.bop,
 				weather: this.setup.weather,
 				changeableWeather: false,
 				tyres: this.setup.tyres,
@@ -37,7 +36,6 @@ export class ConfigureRaceComponent implements OnInit {
 			name: 		[this.race.details.name],
 			special: 	[this.race.details.special],
 			class: 		[this.race.details.class],
-			bop: 		[this.race.details.bop],
 			weather: 	[this.race.details.weather],
 			changeableWeather: [this.race.details.changeableWeather],
 			tyres: 		[this.race.details.tyres],
@@ -73,7 +71,6 @@ export class ConfigureRaceComponent implements OnInit {
 
 		// Update the dashboard setup
 		this.setup.class   = this.raceDetailsForm.value.class
-		this.setup.bop   = this.raceDetailsForm.value.bop
 		this.setup.weather = this.raceDetailsForm.value.weather
 		this.setup.tyres   = this.raceDetailsForm.value.tyres
 
@@ -82,7 +79,6 @@ export class ConfigureRaceComponent implements OnInit {
 				name: 		this.raceDetailsForm.value.name,
 				special: 	this.raceDetailsForm.value.special,
 				class: 		this.raceDetailsForm.value.class,
-				bop: 		this.raceDetailsForm.value.bop,
 				weather: 	this.raceDetailsForm.value.weather,
 				changeableWeather: this.raceDetailsForm.value.changeableWeather,
 				tyres: 		this.raceDetailsForm.value.tyres,

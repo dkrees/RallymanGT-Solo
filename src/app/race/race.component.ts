@@ -116,7 +116,7 @@ export class RaceComponent implements OnInit {
 	// Get log from local storage
 	loadRace():void {
 		this.race = this.localstorage.load();
-		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.bop, this.race.dashboard.tyres, this.race.dashboard.weather);
+		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
 		this.tyreSelect = this.race.dashboard.tyres;
 
 		this.getDicePool();
@@ -241,7 +241,7 @@ export class RaceComponent implements OnInit {
 	// DICE
 	// ==========================================
 	getDicePool():void {
-		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.bop, this.race.dashboard.tyres, this.race.dashboard.weather);
+		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.tyres, this.race.dashboard.weather);
 		this.gears  = availableDice.gears;
 		this.brakes = availableDice.brakes;
 		this.coasts = availableDice.coasts;
@@ -463,8 +463,8 @@ export class RaceComponent implements OnInit {
 
 		this.logOutput =
 			(this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '')
-			+ (this.race.details.special ? '\nSpecial: ' + this.race.details.special : '')
-			+ '\nClass: ' + this.race.details.class + (this.race.details.bop ? ' BOP' : '')
+			+ (this.race.details.special ? '\n' + this.race.details.special : '')
+			+ '\nClass: ' + this.race.details.class
 			+ '\nPit Stops: ' + (this.race.details.pitStops ? 'Yes' : 'No')
 			+ '\nStarting Weather: ' + this.race.details.weather
 			+ '\nChangeable Weather: ' + (this.race.details.changeableWeather ? 'Yes' : 'No') 
