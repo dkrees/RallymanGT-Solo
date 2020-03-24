@@ -1,4 +1,4 @@
-import { GT4, GT5, GT6, Dice } from './carClasses';
+import { GT4, GT5, GT6, GT5BOP, GT6BOP, Dice } from './carClasses';
 
 export interface Turn {
 	dice: 			Dice[],
@@ -68,6 +68,7 @@ export let damage = [
 
 export class Dashboard {
 	class: 			CarClass;
+	bop: 			boolean;
 	weather: 		Weather;
 	tyres: 			Tyres;
 	focusTokens: 	number;
@@ -77,9 +78,10 @@ export class Dashboard {
 	gear: 			string;
 	totalTime: 		number;
 
-	constructor (carClass:CarClass, tyres:Tyres, weather:Weather) {
+	constructor (carClass:CarClass, bop:boolean, tyres:Tyres, weather:Weather) {
 		
 		this.class 			= carClass;
+		this.bop 			= bop;
 		this.tyres 			= tyres;
 		this.weather 		= weather;
 
@@ -92,26 +94,42 @@ export class Dashboard {
 
 	}
 
-	getDice(carClass:CarClass, tyres:Tyres, weather:Weather):{gears:Dice[], coasts:Dice[], brakes:Dice[], boost:Dice[]} {
+	getDice(carClass:CarClass, bop:boolean, tyres:Tyres, weather:Weather):{gears:Dice[], coasts:Dice[], brakes:Dice[], boost:Dice[]} {
 
 		let gears: Dice[];
 		let coasts: Dice[];
 		let brakes: Dice[];
 		let boosts: Dice[];
 
+		console.log(bop);
+
 		if (carClass == CarClass.gt6) {
 
-			gears  = GT6[tyres][weather].gears.dice;
-			coasts = GT6[tyres][weather].coasts.dice;
-			brakes = GT6[tyres][weather].brakes.dice;
-			boosts = GT6[tyres][weather].boost.dice;
+			if (bop) {
+				gears  = GT6BOP[tyres][weather].gears.dice;
+				coasts = GT6BOP[tyres][weather].coasts.dice;
+				brakes = GT6BOP[tyres][weather].brakes.dice;
+				boosts = GT6BOP[tyres][weather].boost.dice;
+			} else {
+				gears  = GT6[tyres][weather].gears.dice;
+				coasts = GT6[tyres][weather].coasts.dice;
+				brakes = GT6[tyres][weather].brakes.dice;
+				boosts = GT6[tyres][weather].boost.dice;
+			}
 
 		} else if (carClass == CarClass.gt5) {
 
-			gears  = GT5[tyres][weather].gears.dice;
-			coasts = GT5[tyres][weather].coasts.dice;
-			brakes = GT5[tyres][weather].brakes.dice;
-			boosts = GT5[tyres][weather].boost.dice;
+			if (bop) {
+				gears  = GT5BOP[tyres][weather].gears.dice;
+				coasts = GT5BOP[tyres][weather].coasts.dice;
+				brakes = GT5BOP[tyres][weather].brakes.dice;
+				boosts = GT5BOP[tyres][weather].boost.dice;
+			} else {
+				gears  = GT5[tyres][weather].gears.dice;
+				coasts = GT5[tyres][weather].coasts.dice;
+				brakes = GT5[tyres][weather].brakes.dice;
+				boosts = GT5[tyres][weather].boost.dice;
+			}
 
 		} else if (carClass == CarClass.gt4) {
 
@@ -134,6 +152,7 @@ export interface Race {
 		special: 	string,
 		pitStops: 	boolean,
 		class: 		CarClass,
+		bop:		boolean,
 		tyres: 		Tyres,
 		isgoytra: 	{spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
 	},

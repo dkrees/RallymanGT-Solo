@@ -24,6 +24,10 @@
           <input type="radio" name="class" formControlName="class" value="GT4" id="class-GT4"><label for="class-GT4">GT4</label>
         </fieldset>
 
+        <fieldset *ngIf="raceDetailsForm.value.class == 'GT6' || raceDetailsForm.value.class == 'GT5'">
+          <input type="checkbox" name="bop" formControlName="bop" id="class-bop"><label for="class-bop">Balance of Power (BOP)</label>
+        </fieldset>
+
         <fieldset>
           <label for="class">Starting Weather</label>
           <input type="radio" name="weather" formControlName="weather" value="dry" id="weather-dry"><label for="weather-dry">Dry</label>
