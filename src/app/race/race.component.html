@@ -9,7 +9,7 @@
       </div>
 
       <div class="cell small-4">
-        <h1 class="digit text-right">{{formatTime(this.race.stages[stageIndex].stageTime - race.stages[stageIndex].dashboard.focusTokens)}}</h1>
+        <h1 class="digit text-right">{{formatTime(race.stages[stageIndex].stageTime - race.stages[stageIndex].dashboard.focusTokens)}}</h1>
       </div>
     </div>
 
@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <div class="cell small-4" *ngIf="race.details.changeableWeather">
+      <div class="cell small-4" *ngIf="race.stages[stageIndex].changeableWeather">
         <label>Weather:</label>
         <div class="grid-x grid-padding-x">
           <div class="cell auto">
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <div class="cell small-4" *ngIf="race.details.pitStops">
+      <div class="cell small-4" *ngIf="race.stages[stageIndex].pitStops">
         <label>Pit Stop:</label>
         <div class="expanded button-group">
           <button type="button" [disabled]="turn.gear != '1'" class="button secondary digit" [ngClass]="{'selected':turn.pitGear == '0'}" (click)="pitstop('0')">0</button>
