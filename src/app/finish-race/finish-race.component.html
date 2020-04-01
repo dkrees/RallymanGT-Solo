@@ -1,0 +1,22 @@
+<div class="grid-container screen-light">
+  <div class="grid-x grid-padding-x">
+    <div class="cell auto">
+      <h2>Finish Stage</h2>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell auto">
+      <button type="button" class="button secondary" routerLink="/race"><span class="material-icons">chevron_left</span>Back</button>
+    </div>
+    <div class="cell auto">
+      <button type="button" class="button float-right" (click)="addStage()"><span class="material-icons">add</span>Add Special Stage</button>
+    </div>
+  </div>
+
+  <div class="cell small-12 medium-6">
+    <textarea rows="5" #output>{{logOutput}}</textarea>
+    <button type="button" class="button secondary" (click)="copyOutput(output)">Copy Log</button>
+  </div>
+
+</div>

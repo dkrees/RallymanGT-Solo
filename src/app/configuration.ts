@@ -76,7 +76,6 @@ export class Dashboard {
 	brakeDamage: 	number;
 	coastDamage: 	number;
 	gear: 			string;
-	totalTime: 		number;
 
 	constructor (carClass:CarClass, bop:boolean, tyres:Tyres, weather:Weather) {
 		
@@ -90,7 +89,6 @@ export class Dashboard {
 		this.brakeDamage 	= 0;
 		this.coastDamage 	= 0;
 		this.gear 			= '0';
-		this.totalTime 		= 0;
 
 	}
 
@@ -100,8 +98,6 @@ export class Dashboard {
 		let coasts: Dice[];
 		let brakes: Dice[];
 		let boosts: Dice[];
-
-		console.log(bop);
 
 		if (carClass == CarClass.gt6) {
 
@@ -144,20 +140,22 @@ export class Dashboard {
 	}
 }
 
+export interface Stage {
+	special:			string,
+	changeableWeather: 	boolean,
+	pitStops: 			boolean,
+	dashboard: 			Dashboard,
+	log: 				Turn[],
+	stageTime:			number			
+} 
+
 export interface Race {
 	details: {
 		name: 		string,
-		weather: 	Weather,
-		changeableWeather: boolean,
-		special: 	string,
-		pitStops: 	boolean,
-		class: 		CarClass,
-		bop:		boolean,
-		tyres: 		Tyres,
 		isgoytra: 	{spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
 	},
-	dashboard: 		Dashboard,
-	log: 			Turn[]
+	stages: Stage[],
+	totalTime: number
 }
 
 

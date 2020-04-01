@@ -6,7 +6,7 @@ import { DiceType, Dice } 		from '../carClasses';
 import { Dashboard, Turn, Race, timing, damage, Weather, CarClass, Tyres } from '../configuration';
 import { LocalstorageService } 	from '../localstorage.service';
 
-//declare var $:any
+declare var $:any
 
 @Component({
   selector: 'app-race',
@@ -16,20 +16,9 @@ import { LocalstorageService } 	from '../localstorage.service';
 
 export class RaceComponent implements OnInit {
 
-
-// TODO
-// ==============================================
-// braking to reduce gear automatically?
-// validation?
-
-// Save races?
-
-// prevent page zoom on mobile
-
-// Add Specials to a race 
-
-
 	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService, private router: Router) {}
+
+	stageIndex: number;
 
 	gears:  	Dice[];
 	brakes: 	Dice[];
@@ -54,13 +43,13 @@ export class RaceComponent implements OnInit {
 	spendFocusOptions;
 
 	// ==========================================
-	// METRICS
+	// METRICS (SERVICE THIS)
 	// ==========================================
 	metrics(action:string):void {
 		this.angulartics2.eventTrack.next({ 
 			action: action,
 			properties: { 
-				category: this.race.details.class, 
+				category: this.race.stages[this.stageIndex].dashboard.class, 
 				label: this.race.details.isgoytra.spareTyre.toString(),
 			},
 		});
@@ -116,16 +105,17 @@ export class RaceComponent implements OnInit {
 	// Get log from local storage
 	loadRace():void {
 		this.race = this.localstorage.load();
-		this.dashboard = new Dashboard(this.race.dashboard.class, this.race.dashboard.bop, this.race.dashboard.tyres, this.race.dashboard.weather);
-		this.tyreSelect = this.race.dashboard.tyres;
+
+		this.stageIndex = this.race.stages.length-1;
+
+		this.dashboard = new Dashboard(this.race.stages[this.stageIndex].dashboard.class, this.race.stages[this.stageIndex].dashboard.bop, this.race.stages[this.stageIndex].dashboard.tyres, this.race.stages[this.stageIndex].dashboard.weather);
+		this.tyreSelect = this.race.stages[this.stageIndex].dashboard.tyres;
 
 		this.getDicePool();
-		
 		this.metrics('load race');
-
 		this.setupFocusOptions();
 		this.totalTime();
-		this.output();
+		/*this.output();*/
 	}
 	
 
@@ -168,8 +158,8 @@ export class RaceComponent implements OnInit {
 
 		// if flat out
 		if (this.turn.flatOut) {
-			// show focus token adjustment in parentheses (duplicate code above!)
-			this.turn.entry = this.turn.entry.concat('(' + this.gainFocus() + ')');
+			this.turn.focus = this.gainFocus();
+			this.turn.entry = this.turn.entry.concat('(' + this.turn.focus + ')');
 
 		} else if (this.turn.focus != 0) {
 			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
@@ -201,7 +191,7 @@ export class RaceComponent implements OnInit {
 
 		// weather change
 		if (this.turn.weatherChange) {
-			this.turn.entry = this.turn.entry.concat('[weather=' + this.race.dashboard.weather + ']');
+			this.turn.entry = this.turn.entry.concat('[weather=' + this.race.stages[this.stageIndex].dashboard.weather + ']');
 		}
 
 
@@ -215,7 +205,7 @@ export class RaceComponent implements OnInit {
 	}
 
 	// ==========================================
-	// TIME FORMATTING
+	// TIME FORMATTING (SERVICE THIS)
 	// ==========================================
 	formatTime(seconds:number):string {
 
@@ -230,18 +220,18 @@ export class RaceComponent implements OnInit {
 	// - focus token bonus is displayed at the end of the outputs
 	totalTime():void {
 		let time = 0;
-		for (var i = 0; i < this.race.log.length; ++i) {
-			time += this.race.log[i].time;
+		for (var i = 0; i < this.race.stages[this.stageIndex].log.length; ++i) {
+			time += this.race.stages[this.stageIndex].log[i].time;
 		}
 
-		this.race.dashboard.totalTime = time;
+		this.race.stages[this.stageIndex].stageTime = time;
 	}
 
 	// ==========================================
 	// DICE
 	// ==========================================
 	getDicePool():void {
-		let availableDice = this.dashboard.getDice(this.race.dashboard.class, this.race.dashboard.bop, this.race.dashboard.tyres, this.race.dashboard.weather);
+		let availableDice = this.dashboard.getDice(this.race.stages[this.stageIndex].dashboard.class, this.race.stages[this.stageIndex].dashboard.bop, this.race.stages[this.stageIndex].dashboard.tyres, this.race.stages[this.stageIndex].dashboard.weather);
 		this.gears  = availableDice.gears;
 		this.brakes = availableDice.brakes;
 		this.coasts = availableDice.coasts;
@@ -366,7 +356,7 @@ export class RaceComponent implements OnInit {
 			},
 			time: 0,
 			entry: '',
-			gear: this.race.dashboard.gear,
+			gear: this.race.stages[this.stageIndex].dashboard.gear,
 			weatherChange: false,
 			pitstop: false,
 			pitGear: ''
@@ -388,30 +378,30 @@ export class RaceComponent implements OnInit {
 		this.metrics('submit entry');
 
 		// update the race log
-		this.race.log.push(this.turn);
+		this.race.stages[this.stageIndex].log.push(this.turn);
 
 		// update dashboard
 		if (this.turn.flatOut) {
-			this.race.dashboard.focusTokens += this.turn.focus;
+			this.race.stages[this.stageIndex].dashboard.focusTokens += this.turn.focus;
 		} else if (this.turn.focus > 0) {
-			this.race.dashboard.focusTokens -= this.turn.focus;
+			this.race.stages[this.stageIndex].dashboard.focusTokens -= this.turn.focus;
 		}
 
-		this.race.dashboard.gear = this.turn.gear;
+		this.race.stages[this.stageIndex].dashboard.gear = this.turn.gear;
 		
 
 		if (this.turn.pitstop) {
 
-			this.race.dashboard.tyres = this.tyreSelect;
+			this.race.stages[this.stageIndex].dashboard.tyres = this.tyreSelect;
 
 			if (this.turn.pitGear === '00') {
-				this.race.dashboard.gearDamage = 0;
-				this.race.dashboard.brakeDamage = 0;
-				this.race.dashboard.coastDamage = 0;
+				this.race.stages[this.stageIndex].dashboard.gearDamage = 0;
+				this.race.stages[this.stageIndex].dashboard.brakeDamage = 0;
+				this.race.stages[this.stageIndex].dashboard.coastDamage = 0;
 			} else {
-				this.race.dashboard.gearDamage += this.turn.damage.gear;
-				this.race.dashboard.brakeDamage += this.turn.damage.brake;
-				this.race.dashboard.coastDamage += this.turn.damage.coast;
+				this.race.stages[this.stageIndex].dashboard.gearDamage += this.turn.damage.gear;
+				this.race.stages[this.stageIndex].dashboard.brakeDamage += this.turn.damage.brake;
+				this.race.stages[this.stageIndex].dashboard.coastDamage += this.turn.damage.coast;
 			}
 		}
 
@@ -421,33 +411,33 @@ export class RaceComponent implements OnInit {
 		this.saveRace(this.race);
 
 		this.resetTurn();
-		this.output();
+		/*this.output();*/
 	}
 
 	// remove a log entry
 	removeLogEntry(index):void {
-		let deletedEntry = this.race.log.splice(index, 1);
+		let deletedEntry = this.race.stages[this.stageIndex].log.splice(index, 1);
 
 		if (deletedEntry[0].flatOut) {
-			this.race.dashboard.focusTokens -= deletedEntry[0].focus;
+			this.race.stages[this.stageIndex].dashboard.focusTokens -= deletedEntry[0].focus;
 		} else if (deletedEntry[0].focus > 0) {
-			this.race.dashboard.focusTokens += deletedEntry[0].focus;
+			this.race.stages[this.stageIndex].dashboard.focusTokens += deletedEntry[0].focus;
 		}
 
-		this.race.dashboard.gearDamage -= deletedEntry[0].damage.gear;
-		this.race.dashboard.brakeDamage -= deletedEntry[0].damage.brake;
-		this.race.dashboard.coastDamage -= deletedEntry[0].damage.coast;
+		this.race.stages[this.stageIndex].dashboard.gearDamage -= deletedEntry[0].damage.gear;
+		this.race.stages[this.stageIndex].dashboard.brakeDamage -= deletedEntry[0].damage.brake;
+		this.race.stages[this.stageIndex].dashboard.coastDamage -= deletedEntry[0].damage.coast;
 
 		// find the last gear entry (regardless which entry was deleted)
-		this.race.dashboard.gear = this.race.log[this.race.log.length-1].gear;
+		this.race.stages[this.stageIndex].dashboard.gear = this.race.stages[this.stageIndex].log[this.race.stages[this.stageIndex].log.length-1].gear;
 
 		// find the lastest weather condition
 		if (deletedEntry[0].weatherChange) {
 			// switch the weather dashboard
-			if (this.race.dashboard.weather == Weather.dry) {
-				this.race.dashboard.weather = Weather.wet;
-			} else if (this.race.dashboard.weather == Weather.wet) {
-				this.race.dashboard.weather = Weather.dry;
+			if (this.race.stages[this.stageIndex].dashboard.weather == Weather.dry) {
+				this.race.stages[this.stageIndex].dashboard.weather = Weather.wet;
+			} else if (this.race.stages[this.stageIndex].dashboard.weather == Weather.wet) {
+				this.race.stages[this.stageIndex].dashboard.weather = Weather.dry;
 			}
 			this.getDicePool();
 		}
@@ -455,30 +445,44 @@ export class RaceComponent implements OnInit {
 		this.totalTime();
 
 		this.saveRace(this.race);
-		this.output();
+		/*this.output();*/
 	}
 
-	output():void {
+/*	output():void {
+		
+		let totalTime = 0;
 		this.logOutput = '';
 
-		this.logOutput =
-			(this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '')
-			+ (this.race.details.special ? '\nSpecial: ' + this.race.details.special : '')
-			+ '\nClass: ' + this.race.details.class + (this.race.details.bop ? ' BOP' : '')
-			+ '\nPit Stops: ' + (this.race.details.pitStops ? 'Yes' : 'No')
-			+ '\nStarting Weather: ' + this.race.details.weather
-			+ '\nChangeable Weather: ' + (this.race.details.changeableWeather ? 'Yes' : 'No') 
-			+ '\nStarting Tyres: ' + this.race.details.tyres
-			+ '\n('+ this.formatTime(this.race.dashboard.totalTime) + '-' + this.formatTime(this.race.dashboard.focusTokens) + ') = ' 
-			+ this.formatTime(this.race.dashboard.totalTime - this.race.dashboard.focusTokens)
-			+ '\n';
+		this.logOutput = (this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '') + '\n';
+		
 
-		for (var i = 0; i < this.race.log.length; ++i) {
-			this.logOutput = this.logOutput.concat(this.race.log[i].entry + ((i < this.race.log.length - 1) ? ':' : ''));
+		for (var stage = 0; stage < this.race.stages.length; ++stage) {
+
+			totalTime += this.race.stages[stage].stageTime - this.race.stages[stage].dashboard.focusTokens;
+
+			let thisStage = 
+				(this.race.stages[stage].special ? '\nSpecial: ' + this.race.stages[stage].special : '')
+				+ '\nClass: ' + this.race.stages[stage].dashboard.class + (this.race.stages[stage].dashboard.bop ? ' BOP' : '')
+				+ '\nPit Stops: ' + (this.race.stages[stage].pitStops ? 'Yes' : 'No')
+				+ '\nStarting Weather: ' + this.race.stages[stage].dashboard.weather
+				+ '\nChangeable Weather: ' + (this.race.stages[stage].changeableWeather ? 'Yes' : 'No') 
+				+ '\nStarting Tyres: ' + this.race.stages[stage].dashboard.tyres
+				+ '\n('+ this.formatTime(this.race.stages[stage].stageTime) + '-' + this.formatTime(this.race.stages[stage].dashboard.focusTokens) + ') = ' 
+				+ this.formatTime(this.race.stages[stage].stageTime - this.race.stages[stage].dashboard.focusTokens)
+				+ '\n';
+
+			for (var i = 0; i < this.race.stages[stage].log.length; ++i) {
+				thisStage = thisStage.concat(this.race.stages[stage].log[i].entry + ((i < this.race.stages[stage].log.length - 1) ? ':' : ''));
+			}
+
+			this.logOutput = this.logOutput.concat(thisStage + '\n');
 		}
-	}
 
-	// Copy Race log to clipboard
+		this.logOutput = this.logOutput.concat('\nTotal Time: ' + this.formatTime(totalTime));
+
+	}*/
+
+/*	// Copy Race log to clipboard
 	copyOutput(outputElement):void {
 
 		this.metrics('copy output');
@@ -496,7 +500,7 @@ export class RaceComponent implements OnInit {
 		} catch (err) {
 			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CTRL (CMD on Mac) + "C"');
 		}
-	}
+	}*/
 
 	// ==========================================
 	// WEATHER CHANGE
@@ -507,10 +511,10 @@ export class RaceComponent implements OnInit {
 		this.turn.weatherChange = !this.turn.weatherChange;
 
 		// switch the weather dashboard
-		if (this.race.dashboard.weather == Weather.dry) {
-			this.race.dashboard.weather = Weather.wet;
-		} else if (this.race.dashboard.weather == Weather.wet) {
-			this.race.dashboard.weather = Weather.dry;
+		if (this.race.stages[this.stageIndex].dashboard.weather == Weather.dry) {
+			this.race.stages[this.stageIndex].dashboard.weather = Weather.wet;
+		} else if (this.race.stages[this.stageIndex].dashboard.weather == Weather.wet) {
+			this.race.stages[this.stageIndex].dashboard.weather = Weather.dry;
 		}
 
 		this.entry();
@@ -538,11 +542,12 @@ export class RaceComponent implements OnInit {
 		this.entry();
 	}
 
+	
 	// ==========================================
 	// INIT APP
 	// ==========================================
 	ngOnInit() {
-
+		// $(document).foundation();
 		if (this.localstorage.isSaved()) {
 			this.loadRace();
 			this.resetTurn();

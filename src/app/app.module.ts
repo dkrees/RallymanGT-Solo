@@ -12,6 +12,7 @@ import { AppComponent }      from './app.component';
 import { RaceComponent }     from './race/race.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ConfigureRaceComponent } from './configure-race/configure-race.component';
+import { FinishRaceComponent } from './finish-race/finish-race.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ConfigureRaceComponent } from './configure-race/configure-race.componen
     RaceComponent,
     WelcomeComponent,
     ConfigureRaceComponent,
+    FinishRaceComponent,
   ],
   imports: [
     BrowserModule,

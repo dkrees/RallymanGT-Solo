@@ -1,146 +1,182 @@
 
-<div class="grid-container screen-light">
+<!-- <div class="off-canvas-content" data-off-canvas-content> -->
 
-  <div class="grid-x grid-padding-x">
-    <div class="cell small-8">
-      <h1 class="">{{race.details.name}}</h1>
-    </div>
+  <div class="grid-container screen-light">
 
-    <div class="cell small-4">
-      <h1 class="digit text-right">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</h1>
-    </div>
-  </div>
-
-  <p>Class: {{race.dashboard.class}} | Gear: {{race.dashboard.gear}} | Focus Tokens: {{race.dashboard.focusTokens}} | Gear Damage: {{race.dashboard.gearDamage}} | Brake Damage: {{race.dashboard.brakeDamage}} | Coast Damage: {{race.dashboard.coastDamage}} | Weather: {{race.dashboard.weather}} | Tyres: {{race.dashboard.tyres}}</p>
-
-  <div class="grid-x grid-padding-x">
-    <div class="cell shrink">
-      <button class="button gear die digit g0" [disabled]="race.dashboard.gear != '00'" type="button" [ngClass]="{'selected':gear0.selected}" (click)="dieSelected(gear0)">{{gear0.label}}</button>
-    </div>
-<!--     <div class="cell shrink">
-      <button class="button gear die digit g00" type="button" [ngClass]="{'selected':gear00.selected}" (click)="dieSelected(gear00)">{{gear00.label}}</button>
-    </div> -->
-    <div *ngFor="let gear of gears" class="cell shrink">
-      <button class="button gear die digit" [disabled]="race.dashboard.gear == '00'" type="button" [ngClass]="{'selected':gear.selected}" [class]="'g'+gear.label" (click)="dieSelected(gear)">{{gear.label}}</button>
-    </div>
-     <div *ngFor="let brake of brakes" class="cell shrink">
-      <button class="button brake die digit" [disabled]="race.dashboard.gear == '00'" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)"></button>
-    </div>
-    <div *ngFor="let coast of coasts" class="cell shrink">
-      <button class="button coast die digit" [disabled]="race.dashboard.gear == '00'" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)"></button>
-    </div>
-    <div *ngFor="let boostDice of boost" class="cell shrink">
-      <button class="button boost die digit" [disabled]="race.dashboard.gear == '00'" type="button" [ngClass]="{'selected':boostDice.selected}" (click)="dieSelected(boostDice)"></button>
-    </div>
-  </div>
-
-  <label for="focus">Focus:</label>
-  <div class="grid-x grid-padding-x">
-    <div class="cell auto">
-      <button type="button" [disabled]="race.dashboard.gear == '00'" class="button warning expanded" [ngClass]="{'selected':turn.flatOut}" (click)="flatOut()">Flat Out!</button>
-    </div>
-
-    <div class="cell auto">
-      <select name="focusTokens" *ngIf="(!turn.flatOut && race.dashboard.gear != '00')" [(ngModel)]="spendFocus" (ngModelChange)="focusSpentSelect($event)">
-        <option *ngFor="let option of spendFocusOptions" [ngValue]="option.value">{{option.label}}</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="grid-x grid-padding-x">
-    <div class="cell small-4">
-      <label>Loss Of Control:</label>
-      <div class="expanded button-group">
-        <button type="button" class="button alert digit" [disabled]="race.dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
-        <button type="button" class="button alert digit" [disabled]="race.dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
+    <div class="grid-x grid-padding-x">
+      <div class="cell small-8">
+        <h1 class="">{{race.details.name}} <small>{{race.stages[stageIndex].special}}</small></h1>
       </div>
 
-      <div *ngIf="turn.loc" class="grid-x grid-padding-x">
-        <div class="cell shrink">
-          <button type="button" class="button gear die expanded digit" (click)="addDamage('gear')">-G</button>
-        </div>
-        <div class="cell shrink">
-          <button type="button" class="button brake die expanded digit" (click)="addDamage('brake')">-B</button>
-        </div>
-        <div class="cell shrink">
-          <button type="button" class="button coast die expanded digit" (click)="addDamage('coast')">-C</button>
-        </div>
-
-        <div class="cell auto">
-          <button type="button" class="button expanded secondary hollow" (click)="clearDamage()">Clear</button>
-        </div>
+      <div class="cell small-4">
+        <h1 class="digit text-right">{{formatTime(this.race.stages[stageIndex].stageTime - race.stages[stageIndex].dashboard.focusTokens)}}</h1>
       </div>
     </div>
 
-    <div class="cell small-4" *ngIf="race.details.changeableWeather">
-      <label>Weather:</label>
-      <div class="grid-x grid-padding-x">
-        <div class="cell auto">
-          <!-- <input type="image" src="../../assets/images/weather-change-token.png" id="weather-change" alt="Weather Change" class="token" (click)="weatherChange()"> -->
-          <input type="button" class="button expanded" value="Change" (click)="weatherChange()">
+    <p>Class: {{race.stages[stageIndex].dashboard.class}} | Gear: {{race.stages[stageIndex].dashboard.gear}} | Focus Tokens: {{race.stages[stageIndex].dashboard.focusTokens}} | Gear Damage: {{race.stages[stageIndex].dashboard.gearDamage}} | Brake Damage: {{race.stages[stageIndex].dashboard.brakeDamage}} | Coast Damage: {{race.stages[stageIndex].dashboard.coastDamage}} | Weather: {{race.stages[stageIndex].dashboard.weather}} | Tyres: {{race.stages[stageIndex].dashboard.tyres}}</p>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell shrink">
+        <button class="button gear die digit g0" [disabled]="race.stages[stageIndex].dashboard.gear != '00'" type="button" [ngClass]="{'selected':gear0.selected}" (click)="dieSelected(gear0)">{{gear0.label}}</button>
+      </div>
+
+      <div *ngFor="let gear of gears" class="cell shrink">
+        <button class="button gear die digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" type="button" [ngClass]="{'selected':gear.selected}" [class]="'g'+gear.label" (click)="dieSelected(gear)">{{gear.label}}</button>
+      </div>
+       <div *ngFor="let brake of brakes" class="cell shrink">
+        <button class="button brake die digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" type="button" [ngClass]="{'selected':brake.selected}" (click)="dieSelected(brake)"></button>
+      </div>
+      <div *ngFor="let coast of coasts" class="cell shrink">
+        <button class="button coast die digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" type="button" [ngClass]="{'selected':coast.selected}" (click)="dieSelected(coast)"></button>
+      </div>
+      <div *ngFor="let boostDice of boost" class="cell shrink">
+        <button class="button boost die digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" type="button" [ngClass]="{'selected':boostDice.selected}" (click)="dieSelected(boostDice)"></button>
+      </div>
+    </div>
+
+    <label for="focus">Focus:</label>
+    <div class="grid-x grid-padding-x">
+      <div class="cell auto">
+        <button type="button" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" class="button warning expanded" [ngClass]="{'selected':turn.flatOut}" (click)="flatOut()">Flat Out!</button>
+      </div>
+
+      <div class="cell auto">
+        <select name="focusTokens" *ngIf="(!turn.flatOut && race.stages[stageIndex].dashboard.gear != '00')" [(ngModel)]="spendFocus" (ngModelChange)="focusSpentSelect($event)">
+          <option *ngFor="let option of spendFocusOptions" [ngValue]="option.value">{{option.label}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell small-4">
+        <label>Loss Of Control:</label>
+        <div class="expanded button-group">
+          <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
+          <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
+        </div>
+
+        <div *ngIf="turn.loc" class="grid-x grid-padding-x">
+          <div class="cell shrink">
+            <button type="button" class="button gear die expanded digit" (click)="addDamage('gear')">-G</button>
+          </div>
+          <div class="cell shrink">
+            <button type="button" class="button brake die expanded digit" (click)="addDamage('brake')">-B</button>
+          </div>
+          <div class="cell shrink">
+            <button type="button" class="button coast die expanded digit" (click)="addDamage('coast')">-C</button>
+          </div>
+
+          <div class="cell auto">
+            <button type="button" class="button expanded secondary hollow" (click)="clearDamage()">Clear</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="cell small-4" *ngIf="race.details.pitStops">
-      <label>Pit Stop:</label>
-      <div class="expanded button-group">
-        <button type="button" [disabled]="turn.gear != '1'" class="button secondary digit" [ngClass]="{'selected':turn.pitGear == '0'}" (click)="pitstop('0')">0</button>
-        <button type="button" [disabled]="turn.gear != '1'" class="button secondary digit" [ngClass]="{'selected':turn.pitGear == '00'}" (click)="pitstop('00')">00</button>
+      <div class="cell small-4" *ngIf="race.details.changeableWeather">
+        <label>Weather:</label>
+        <div class="grid-x grid-padding-x">
+          <div class="cell auto">
+            <!-- <input type="image" src="../../assets/images/weather-change-token.png" id="weather-change" alt="Weather Change" class="token" (click)="weatherChange()"> -->
+            <input type="button" class="button expanded" value="Change" (click)="weatherChange()">
+          </div>
+        </div>
       </div>
-      <select name="tyreOptions" *ngIf="turn.pitstop" [(ngModel)]="tyreSelect" (ngModelChange)="tyreChange($event)">
-        <option *ngFor="let option of tyreOptions" [ngValue]="option">{{option}}</option>
-      </select>
+
+      <div class="cell small-4" *ngIf="race.details.pitStops">
+        <label>Pit Stop:</label>
+        <div class="expanded button-group">
+          <button type="button" [disabled]="turn.gear != '1'" class="button secondary digit" [ngClass]="{'selected':turn.pitGear == '0'}" (click)="pitstop('0')">0</button>
+          <button type="button" [disabled]="turn.gear != '1'" class="button secondary digit" [ngClass]="{'selected':turn.pitGear == '00'}" (click)="pitstop('00')">00</button>
+        </div>
+        <select name="tyreOptions" *ngIf="turn.pitstop" [(ngModel)]="tyreSelect" (ngModelChange)="tyreChange($event)">
+          <option *ngFor="let option of tyreOptions" [ngValue]="option">{{option}}</option>
+        </select>
+      </div>
+
     </div>
 
-  </div>
-
-  
-  <label>Turn:</label>
-  <div class="grid-x grid-margin-x">
-    <div class="cell auto">
-      <p><strong>{{turn.entry}}</strong></p>
-    </div>
-    <div class="cell small-6">
-      <button type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">Submit</button>
-    </div>
-  </div>
-
-  <hr>
-
-  <div class="grid-x grid-padding-x" *ngFor="let turn of race.log; let i = index">
-    <div class="cell small-3 medium-1">Turn {{i+1}}:</div>
-    <div class="cell small-5 medium-2">{{turn.entry}}</div>
-    <div class="cell small-2 medium-2 digit">{{formatTime(turn.time)}}</div>
-    <div class="cell small-2 medium-1 text-center" [hidden]="i != race.log.length-1" (click)="removeLogEntry(i)"><span>&times;</span></div>
-  </div>
     
-  <hr>
+    <label>Turn:</label>
+    <div class="grid-x grid-margin-x">
+      <div class="cell auto">
+        <p><strong>{{turn.entry}}</strong></p>
+      </div>
+      <div class="cell small-6">
+        <button type="submit" class="button success expanded" value="Submit" (click)="submitLogEntry()">Submit</button>
+      </div>
+    </div>
 
-  <div class="grid-x grid-padding-x">
-    <div class="cell small-8 medium-3">Time:</div>
-    <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.dashboard.totalTime)}}</span></div>
-  </div>
+    <hr>
 
-  <div class="grid-x grid-padding-x">
-    <div class="cell small-8 medium-3">Focus:</div>
-    <div class="cell small-4 medium-3"><span class="digit">{{race.dashboard.focusTokens}}</span></div>
-  </div>
+    <div class="grid-x grid-padding-x" *ngFor="let turn of race.stages[stageIndex].log; let i = index">
+      <div class="cell small-3 medium-1">Turn {{i+1}}:</div>
+      <div class="cell small-5 medium-2">{{turn.entry}}</div>
+      <div class="cell small-2 medium-2 digit">{{formatTime(turn.time)}}</div>
+      <div class="cell small-2 medium-1 text-center" [hidden]="i != race.stages[stageIndex].log.length-1" (click)="removeLogEntry(i)"><span>&times;</span></div>
+    </div>
+      
+    <hr>
 
-  <div class="grid-x grid-padding-x">
-    <div class="cell small-8 medium-3">Total:</div>
-    <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.dashboard.totalTime - race.dashboard.focusTokens)}}</span></div>
-  </div>
+    <div class="grid-x grid-padding-x">
+      <div class="cell small-8 medium-3">Time:</div>
+      <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.stages[stageIndex].stageTime)}}</span></div>
+    </div>
 
-  <label>Log Output:</label>
-  
-  <div class="grid-x grid-padding-x">
-    <div class="cell auto">
+    <div class="grid-x grid-padding-x">
+      <div class="cell small-8 medium-3">Focus:</div>
+      <div class="cell small-4 medium-3"><span class="digit">{{race.stages[stageIndex].dashboard.focusTokens}}</span></div>
+    </div>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell small-8 medium-3">Stage Total:</div>
+      <div class="cell small-4 medium-3"><span class="digit">{{formatTime(this.race.stages[stageIndex].stageTime - race.stages[stageIndex].dashboard.focusTokens)}}</span></div>
+    </div>
+
+    <hr>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell auto">
+        <button type="button" class="button primary expanded" routerLink="/finish-race">Finish Race</button>
+      </div>
+    </div>
+
+    <!-- <label>Log Output:</label>
+    <div class="grid-x grid-padding-x">
+      <div class="cell auto">
+        <textarea #output>{{logOutput}}</textarea>
+        <button type="button" class="button secondary hollow" (click)="copyOutput(output)">Copy Log</button>
+      </div>
+      <div class="cell auto">
+        <button type="button" class="button primary" data-toggle="offCanvas">Finish Race</button>
+      </div>
+    </div> -->
+
+  </div> <!-- /grid-container -->
+<!-- </div>  /off-canvas-content -->
+
+<!--
+<div class="off-canvas position-bottom" id="offCanvas" data-off-canvas>
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x">
+      <div class="cell">
+        
+        <h2>Finish Race</h2>
+        <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="cell small-12 medium-6">
       <textarea #output>{{logOutput}}</textarea>
       <button type="button" class="button secondary hollow" (click)="copyOutput(output)">Copy Log</button>
     </div>
+    <div class="cell auto">
+      <button type="button" class="button secondary" (click)="addStage()">Add Special Stage</button>
+    </div>
   </div>
 </div>
+-->
 
 
 
