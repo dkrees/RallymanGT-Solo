@@ -21,6 +21,7 @@ export class FinishRaceComponent implements OnInit {
   race: 	  Race;
   stageIndex: number;
   logOutput:  string;
+  bggUser: string;
 
   	// ==========================================
 	// METRICS (SERVICE THIS)
