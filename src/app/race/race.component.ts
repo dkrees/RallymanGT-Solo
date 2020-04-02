@@ -448,60 +448,6 @@ export class RaceComponent implements OnInit {
 		/*this.output();*/
 	}
 
-/*	output():void {
-		
-		let totalTime = 0;
-		this.logOutput = '';
-
-		this.logOutput = (this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '') + '\n';
-		
-
-		for (var stage = 0; stage < this.race.stages.length; ++stage) {
-
-			totalTime += this.race.stages[stage].stageTime - this.race.stages[stage].dashboard.focusTokens;
-
-			let thisStage = 
-				(this.race.stages[stage].special ? '\nSpecial: ' + this.race.stages[stage].special : '')
-				+ '\nClass: ' + this.race.stages[stage].dashboard.class + (this.race.stages[stage].dashboard.bop ? ' BOP' : '')
-				+ '\nPit Stops: ' + (this.race.stages[stage].pitStops ? 'Yes' : 'No')
-				+ '\nStarting Weather: ' + this.race.stages[stage].dashboard.weather
-				+ '\nChangeable Weather: ' + (this.race.stages[stage].changeableWeather ? 'Yes' : 'No') 
-				+ '\nStarting Tyres: ' + this.race.stages[stage].dashboard.tyres
-				+ '\n('+ this.formatTime(this.race.stages[stage].stageTime) + '-' + this.formatTime(this.race.stages[stage].dashboard.focusTokens) + ') = ' 
-				+ this.formatTime(this.race.stages[stage].stageTime - this.race.stages[stage].dashboard.focusTokens)
-				+ '\n';
-
-			for (var i = 0; i < this.race.stages[stage].log.length; ++i) {
-				thisStage = thisStage.concat(this.race.stages[stage].log[i].entry + ((i < this.race.stages[stage].log.length - 1) ? ':' : ''));
-			}
-
-			this.logOutput = this.logOutput.concat(thisStage + '\n');
-		}
-
-		this.logOutput = this.logOutput.concat('\nTotal Time: ' + this.formatTime(totalTime));
-
-	}*/
-
-/*	// Copy Race log to clipboard
-	copyOutput(outputElement):void {
-
-		this.metrics('copy output');
-
-		outputElement.focus();
-		outputElement.select();
-
-		try {
-			var successful = document.execCommand('copy');
-
-			if (successful) {
-				alert('Race Log copied to clipboard!');
-			}
-			
-		} catch (err) {
-			alert('Sorry, unable to copy text. Try selecting the text, right click and "copy" or CTRL (CMD on Mac) + "C"');
-		}
-	}*/
-
 	// ==========================================
 	// WEATHER CHANGE
 	// ==========================================

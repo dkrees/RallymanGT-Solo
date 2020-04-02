@@ -18,11 +18,11 @@ export class FinishRaceComponent implements OnInit {
   	private router: Router
   ) { }
 
-  race: 			Race;
+  race: 	  Race;
   stageIndex: number;
-  logOutput:	string;
+  logOutput:  string;
 
-  // ==========================================
+  	// ==========================================
 	// METRICS (SERVICE THIS)
 	// ==========================================
 	metrics(action:string):void {
@@ -50,7 +50,7 @@ export class FinishRaceComponent implements OnInit {
 		this.output();
 	}
 
-  // ==========================================
+  	// ==========================================
 	// TIME FORMATTING (SERVICE THIS)
 	// ==========================================
 	formatTime(seconds:number):string {
@@ -62,7 +62,7 @@ export class FinishRaceComponent implements OnInit {
 		return duration.format("mm:ss");
 	}
 
-  output():void {
+  	output():void {
 		
 		let totalTime = 0;
 		this.logOutput = '';
@@ -116,11 +116,61 @@ export class FinishRaceComponent implements OnInit {
 		}
 	}
 
-	// ==========================================
-	// ADD SPECIAL STAGE
-	// ==========================================
+	
 	addStage():void {
+		this.metrics('add special stage');
 		this.router.navigate(['/', 'configure-race', this.race.stages.length]);
+	}
+
+
+
+	// ==========================================
+	// YAML OUTPUT AND GEEKMAIL
+	// ==========================================
+	yamlOutput(bggUser:string):string {
+		
+		let yamlOutput = '[c]';
+		
+		if (!bggUser) {
+			return;
+		}
+
+		yamlOutput = yamlOutput.concat(bggUser + ':\r')
+
+		for (var stage = 0; stage < this.race.stages.length; ++stage) {
+			let thisStage = 
+				'- class: ' + this.race.stages[stage].dashboard.class + (this.race.stages[stage].dashboard.bop ? 'bop' : '')
+				+ '\r  tyres: ' + this.race.stages[stage].dashboard.tyres
+				+ '\r  tracktime: ' + this.formatTime(this.race.stages[stage].stageTime)
+				+ '\r  focus: ' + this.formatTime(this.race.stages[stage].dashboard.focusTokens)
+				+ '\r  totaltime: ' + this.formatTime(this.race.stages[stage].stageTime - this.race.stages[stage].dashboard.focusTokens)
+				+ '\r  newnotation: ';
+
+			for (var i = 0; i < this.race.stages[stage].log.length; ++i) {
+				thisStage = thisStage.concat(this.race.stages[stage].log[i].entry + ((i < this.race.stages[stage].log.length - 1) ? ':' : ''));
+			}
+			
+			yamlOutput = yamlOutput.concat(thisStage + '\r');
+		}
+
+		yamlOutput = yamlOutput.concat('[/c]');
+		return yamlOutput;
+
+	}
+
+
+	geekmailRace(bggUser:string):void {
+
+		this.metrics('geekmail race log');
+
+		let toUser:string = 'firedrake';
+		let subject:string = 'ISGOYTRA' + (this.race.details.name ? ': ' + this.race.details.name : '');
+		let body:string = encodeURIComponent(this.yamlOutput(bggUser));
+		let url:string = 'https://boardgamegeek.com/geekmail/compose?touser=' + toUser + '&subject=' + subject + '&body=' + body;
+
+		var win = window.open(url, '_blank');
+  		win.focus();
+		
 	}
 
   ngOnInit() {
