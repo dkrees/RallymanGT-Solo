@@ -135,6 +135,12 @@ export class RaceComponent implements OnInit {
 			}			
 		}
 
+		// doh! flying start fail
+		if (this.turn.flyingStartFail) {
+			this.turn.entry = '2';
+			this.turn.gear = '2';
+		}
+
 		// uh oh, Loss of Control
 		if (this.turn.loc) {
 
@@ -143,7 +149,6 @@ export class RaceComponent implements OnInit {
 
 			// set gear to LOC 
 			this.turn.gear = this.turn.locGear;
-		
 		}
 
 		// if pit stop
@@ -153,7 +158,6 @@ export class RaceComponent implements OnInit {
 
 			// set gear to LOC 
 			this.turn.gear = this.turn.pitGear;
-			
 		}
 
 		// if flat out
@@ -305,6 +309,16 @@ export class RaceComponent implements OnInit {
 	}
 
 	// ==========================================
+	// FLYING START FAILED
+	// ==========================================
+	// doh! flying start fail
+	flyingStartFailed():void {
+		this.metrics('flying start fail');
+		this.turn.flyingStartFail = !this.turn.flyingStartFail;
+		this.entry();
+	}
+
+	// ==========================================
 	// ADD DAMAGE
 	// ==========================================
 	// add damage from damage tokens
@@ -347,6 +361,7 @@ export class RaceComponent implements OnInit {
 			dice: [],
 			loc: false,
 			locGear: '',
+			flyingStartFail: false,
 			flatOut: false,
 			focus: 0,
 			damage: {

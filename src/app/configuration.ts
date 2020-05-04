@@ -4,6 +4,7 @@ export interface Turn {
 	dice: 			Dice[],
 	loc: 			boolean,
 	locGear: 		string,
+	flyingStartFail: boolean,
 	flatOut: 		boolean,
 	focus: 			number,
 	damage: 		{gear:number, brake: number, coast:number},
@@ -144,6 +145,7 @@ export interface Stage {
 	special:			string,
 	changeableWeather: 	boolean,
 	pitStops: 			boolean,
+	flyingStart:		boolean,
 	dashboard: 			Dashboard,
 	log: 				Turn[],
 	stageTime:			number			

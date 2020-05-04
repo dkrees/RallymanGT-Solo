@@ -32,6 +32,7 @@ export class ConfigureRaceComponent implements OnInit {
 			special: '',
 			changeableWeather: false,
 			pitStops: false,
+			flyingStart: false,
 			dashboard: new Dashboard(CarClass.gt6, false, Tyres.asphalt, Weather.dry),
 			log: [],
 			stageTime: 0
@@ -55,7 +56,8 @@ export class ConfigureRaceComponent implements OnInit {
 			weather: 	[this.stage.dashboard.weather],
 			changeableWeather: [this.stage.changeableWeather],
 			tyres: 		[this.stage.dashboard.tyres],
-			pits: 		[this.stage.pitStops]
+			pits: 		[this.stage.pitStops],
+			flyingStart: [this.stage.flyingStart]
 		});
 	}
 
@@ -92,7 +94,8 @@ export class ConfigureRaceComponent implements OnInit {
 			weather: 	[this.race.stages[this.stageIndex].dashboard.weather],
 			changeableWeather: [this.race.stages[this.stageIndex].changeableWeather],
 			tyres: 		[this.race.stages[this.stageIndex].dashboard.tyres],
-			pits: 		[this.race.stages[this.stageIndex].pitStops]
+			pits: 		[this.race.stages[this.stageIndex].pitStops],
+			flyingStart: [this.race.stages[this.stageIndex].flyingStart]
 		});
 
 		this.race.stages.push(this.stage);
@@ -104,6 +107,7 @@ export class ConfigureRaceComponent implements OnInit {
 		this.stage.special 				= this.raceDetailsForm.value.special;
 		this.stage.changeableWeather 	= this.raceDetailsForm.value.changeableWeather;
 		this.stage.pitStops 			= this.raceDetailsForm.value.pits;
+		this.stage.flyingStart			= this.raceDetailsForm.value.flyingStart;
 
 		// Update the dashboard setup
 		this.stage.dashboard.class   	= this.raceDetailsForm.value.class;

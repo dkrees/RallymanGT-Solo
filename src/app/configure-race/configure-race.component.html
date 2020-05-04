@@ -54,6 +54,12 @@
         </fieldset>
 
         <fieldset>
+          <label for="class">Flying Start</label>
+          <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="false" id="flyingStart-no"><label for="flyingStart-no">No</label>
+          <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="true" id="flyingStart-yes"><label for="flyingStart-yes">Yes</label>
+        </fieldset>
+
+        <fieldset>
           <label for="class">ISGOYTRA Timing (00 = 30 seconds)</label>
           <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="false" id="isgoytra-no"><label for="isgoytra-no">No</label>
           <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="true" id="isgoytra-yes"><label for="isgoytra-yes">Yes</label>
