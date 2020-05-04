@@ -52,7 +52,7 @@
       <div class="expanded button-group">
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
-        <button type="button" class="button alert digit" *ngIf="race.stages[stageIndex].flyingStart" [ngClass]="{'selected':turn.flyingStartFailed}" (click)="flyingStartFailed()">Flying Start <i class="material-icons md-36">warning</i></button>
+        <button type="button" class="button alert digit" *ngIf="race.stages[stageIndex].flyingStart" [ngClass]="{'selected':turn.flyingStartFail}" (click)="flyingStartFailed()">Flying Start <i class="material-icons md-36">warning</i></button>
       </div>
 
       <div *ngIf="turn.loc" class="grid-x grid-padding-x">
