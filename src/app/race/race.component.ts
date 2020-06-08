@@ -90,7 +90,14 @@ export class RaceComponent implements OnInit {
 				focusGained++;
 			}			
 		}
-		return focusGained;
+
+		// Focus can only be gained for 2 or more gear/coast dice used
+		if (focusGained >= 2) {
+			return focusGained;
+		} else {
+			return 0;
+		}
+		
 	}
 	
 
@@ -163,7 +170,10 @@ export class RaceComponent implements OnInit {
 		// if flat out
 		if (this.turn.flatOut) {
 			this.turn.focus = this.gainFocus();
-			this.turn.entry = this.turn.entry.concat('(' + this.turn.focus + ')');
+
+			if (this.turn.focus >= 2) {
+				this.turn.entry = this.turn.entry.concat('(' + this.turn.focus + ')');
+			}
 
 		} else if (this.turn.focus != 0) {
 			this.turn.entry = this.turn.entry.concat('(' + -this.turn.focus + ')');
@@ -446,7 +456,7 @@ export class RaceComponent implements OnInit {
 		// find the last gear entry (regardless which entry was deleted)
 		this.race.stages[this.stageIndex].dashboard.gear = this.race.stages[this.stageIndex].log[this.race.stages[this.stageIndex].log.length-1].gear;
 
-		// find the lastest weather condition
+		// find the latest weather condition
 		if (deletedEntry[0].weatherChange) {
 			// switch the weather dashboard
 			if (this.race.stages[this.stageIndex].dashboard.weather == Weather.dry) {
