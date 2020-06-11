@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
 		angulartics2GoogleAnalytics.startTracking();
 	}
 
-	title = 'Rallyman GT Timing App'
+	title = 'Rallyman GT Solo'
 
 	// initialise app
 	ngOnInit() {}
