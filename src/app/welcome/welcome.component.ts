@@ -10,9 +10,14 @@ import { LocalstorageService } 	from '../localstorage.service';
 
 export class WelcomeComponent implements OnInit {
 
-	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService) {}
+	raceExists:boolean;
 
-	raceExists:boolean = false;
+	constructor(private angulartics2: Angulartics2, private localstorage: LocalstorageService) {
+
+		this.raceExists = false;
+	}
+
+	
 
 	// ==========================================
 	// METRICS

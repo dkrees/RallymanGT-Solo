@@ -1,8 +1,8 @@
 import { CarClass, Tyres, Weather, Dashboard, Turn, Stage, Race } from './configuration';
 
-interface raceFormat {month: string, race: Race};
+interface RaceFormat {month: string, race: Race};
 
-export let races: raceFormat[] = [
+export const ISGOYTRARaces: RaceFormat[] = [
 	{
 		month: 'July',
 		race: {
