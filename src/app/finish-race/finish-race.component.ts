@@ -31,7 +31,7 @@ export class FinishRaceComponent implements OnInit {
 			action: action,
 			properties: { 
 				category: this.race.stages[this.stageIndex].dashboard.class, 
-				label: this.race.details.isgoytra.spareTyre.toString(),
+				label: this.race.details.isgoytra.toString(),
 			},
 		});
 	}
@@ -68,7 +68,7 @@ export class FinishRaceComponent implements OnInit {
 		let totalTime = 0;
 		this.logOutput = '';
 
-		this.logOutput = (this.race.details.isgoytra.spareTyre ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '') + '\n';
+		this.logOutput = (this.race.details.isgoytra ? 'ISGOYTRA: ' : '') + (this.race.details.name ? this.race.details.name : '') + '\n';
 		
 
 		for (var stage = 0; stage < this.race.stages.length; ++stage) {

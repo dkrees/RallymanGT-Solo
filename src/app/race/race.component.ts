@@ -49,8 +49,8 @@ export class RaceComponent implements OnInit {
 		this.angulartics2.eventTrack.next({ 
 			action: action,
 			properties: { 
-				category: this.race.stages[this.stageIndex].dashboard.class, 
-				label: this.race.details.isgoytra.spareTyre.toString(),
+				category: this.race.stages[this.stageIndex].dashboard.class,
+				label: this.race.details.isgoytra.toString(),
 			},
 		});
 	}
@@ -115,7 +115,6 @@ export class RaceComponent implements OnInit {
 		this.metrics('load race');
 		this.setupFocusOptions();
 		this.totalTime();
-		/*this.output();*/
 	}
 	
 
@@ -200,11 +199,7 @@ export class RaceComponent implements OnInit {
 
 
 		// apply timing with this turns gear
-		if (this.race.details.isgoytra.spareTyre) {
-			this.turn.time = timing.isgoytraRules[this.turn.gear];
-		} else {
-			this.turn.time = timing.standardRules[this.turn.gear];
-		}
+		this.turn.time = timing.standardRules[this.turn.gear];
 
 	}
 

@@ -1,0 +1,28 @@
+import { CarClass, Tyres, Weather, Dashboard, Turn, Stage, Race } from './configuration';
+
+interface raceFormat {month: string, race: Race};
+
+export let races: raceFormat[] = [
+	{
+		month: 'July',
+		race: {
+			details: {
+				name: 'July race name',
+				isgoytra: true,
+				options: {carClass: true, tyres: false, weather: false, changeableWeather: false, pitStops: false, flyingStart: false}
+			},
+			stages: [
+				{
+					special: '1',
+					changeableWeather: false,
+					pitStops: false,
+					flyingStart: false,
+					dashboard: new Dashboard(CarClass.gt6, false, Tyres.asphalt, Weather.dry),
+					log: [],
+					stageTime: 0
+				}
+			],
+			totalTime: 0
+		}
+	}
+]

@@ -47,16 +47,6 @@ export let timing = {
 		'2' : 40,
 		'1' : 50,
 		'0' : 60,
-		'00': 120
-	},
-	isgoytraRules: {
-		'6' : 10,
-		'5' : 15,
-		'4' : 20,
-		'3' : 30,
-		'2' : 40,
-		'1' : 50,
-		'0' : 60,
 		'00': 30
 	}
 }
@@ -154,7 +144,8 @@ export interface Stage {
 export interface Race {
 	details: {
 		name: 		string,
-		isgoytra: 	{spareTyre: boolean} // reduces 00: 120 seconds penalty to 30 seconds
+		isgoytra: 	boolean,
+		options: {carClass: boolean, tyres: boolean, weather: boolean, changeableWeather: boolean, pitStops: boolean, flyingStart: boolean}
 	},
 	stages: Stage[],
 	totalTime: number

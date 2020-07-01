@@ -41,7 +41,8 @@ export class ConfigureRaceComponent implements OnInit {
 		this.race = {
 			details: {
 				name: 		'',
-				isgoytra: 	{spareTyre:false}
+				isgoytra: false,
+				options: {carClass: true, tyres: true, weather: true, changeableWeather: true, pitStops: true, flyingStart: true}
 			},
 			stages:[this.stage],
 			totalTime: 0
@@ -49,7 +50,6 @@ export class ConfigureRaceComponent implements OnInit {
 
 		this.raceDetailsForm = this.fb.group({
 			name: 		[this.race.details.name],
-			isgoytra: 	[this.race.details.isgoytra.spareTyre],
 			special: 	[this.stage.special],
 			class: 		[this.stage.dashboard.class],
 			bop: 		[this.stage.dashboard.bop],
@@ -67,8 +67,8 @@ export class ConfigureRaceComponent implements OnInit {
 		this.angulartics2.eventTrack.next({ 
 			action: action,
 			properties: { 
-				category: this.race.stages[this.stageIndex].dashboard.class, 
-				label: this.race.details.isgoytra.spareTyre.toString(),
+				category: this.race.stages[this.stageIndex].dashboard.class,
+				label: this.race.details.isgoytra.toString(),
 			},
 		});
 	}
@@ -87,7 +87,6 @@ export class ConfigureRaceComponent implements OnInit {
 
 		this.raceDetailsForm = this.fb.group({
 			name: 		[this.race.details.name],
-			isgoytra: 	[this.race.details.isgoytra.spareTyre],
 			special: 	[this.race.stages[this.stageIndex].special],
 			class: 		[this.race.stages[this.stageIndex].dashboard.class],
 			bop: 		[this.race.stages[this.stageIndex].dashboard.bop],
@@ -118,7 +117,6 @@ export class ConfigureRaceComponent implements OnInit {
 		this.stage.log = [];
 
 		this.race.details.name 			= this.raceDetailsForm.value.name;
-		this.race.details.isgoytra.spareTyre = this.raceDetailsForm.value.isgoytra;
 
 		this.metrics('save new race');
 		this.localstorage.save(this.race);

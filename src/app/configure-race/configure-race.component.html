@@ -17,52 +17,46 @@
           <input id="special" type="text" name="special" formControlName="special" placeholder="Special"/>
         </label>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.carClass">
           <label for="class">Class</label>
           <input type="radio" name="class" formControlName="class" value="GT6" id="class-GT6"><label for="class-GT6">GT6</label>
           <input type="radio" name="class" formControlName="class" value="GT5" id="class-GT5"><label for="class-GT5">GT5</label>
           <input type="radio" name="class" formControlName="class" value="GT4" id="class-GT4"><label for="class-GT4">GT4</label>
         </fieldset>
 
-        <fieldset *ngIf="raceDetailsForm.value.class == 'GT6' || raceDetailsForm.value.class == 'GT5'">
+        <fieldset *ngIf="race.details.options.carClass && (raceDetailsForm.value.class == 'GT6' || raceDetailsForm.value.class == 'GT5')">
           <input type="checkbox" name="bop" formControlName="bop" id="class-bop"><label for="class-bop">Balance of Power (BOP)</label>
         </fieldset>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.weather">
           <label for="class">Starting Weather</label>
           <input type="radio" name="weather" formControlName="weather" value="dry" id="weather-dry"><label for="weather-dry">Dry</label>
           <input type="radio" name="weather" formControlName="weather" value="rain" id="weather-rain"><label for="weather-rain">Rain</label>
          </fieldset>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.changeableWeather">
           <label for="class">Changeable Weather</label>
           <input type="radio" name="changeableWeather" formControlName="changeableWeather" [value]="false" id="changeable-false"><label for="changeable-false">No</label>
           <input type="radio" name="changeableWeather" formControlName="changeableWeather" [value]="true" id="changeable-true"><label for="changeable-true">Yes</label>
         </fieldset>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.tyres">
           <label for="class">Starting Tyres</label>
           <input type="radio" name="tyres" formControlName="tyres" value="asphalt" id="tyres-asphalt"><label for="tyres-asphalt">Asphalt</label>
           <input type="radio" name="tyres" formControlName="tyres" value="rain" id="tyres-rain"><label for="tyres-rain">Rain</label>
           <input type="radio" name="tyres" formControlName="tyres" value="soft" id="tyres-soft"><label for="tyres-soft">Soft</label>
         </fieldset>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.pitStops">
           <label for="class">Pit Stops</label>
           <input type="radio" name="pits" formControlName="pits" [value]="false" id="pits-no"><label for="pits-no">No</label>
           <input type="radio" name="pits" formControlName="pits" [value]="true" id="pits-yes"><label for="pits-yes">Yes</label>
         </fieldset>
 
-        <fieldset>
+        <fieldset *ngIf="race.details.options.flyingStart">
           <label for="class">Flying Start</label>
           <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="false" id="flyingStart-no"><label for="flyingStart-no">No</label>
           <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="true" id="flyingStart-yes"><label for="flyingStart-yes">Yes</label>
-        </fieldset>
-
-        <fieldset>
-          <label for="class">ISGOYTRA Timing (00 = 30 seconds)</label>
-          <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="false" id="isgoytra-no"><label for="isgoytra-no">No</label>
-          <input type="radio" name="isgoytra" formControlName="isgoytra" [value]="true" id="isgoytra-yes"><label for="isgoytra-yes">Yes</label>
         </fieldset>
         
         <button type="submit" class="button small expanded">Race!</button>
