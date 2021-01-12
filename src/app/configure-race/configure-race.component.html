@@ -58,6 +58,12 @@
           <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="false" id="flyingStart-no"><label for="flyingStart-no">No</label>
           <input type="radio" name="flyingStart" formControlName="flyingStart" [value]="true" id="flyingStart-yes"><label for="flyingStart-yes">Yes</label>
         </fieldset>
+
+        <fieldset *ngIf="race.details.options.sisu">
+          <label for="class">SISU</label>
+          <input type="radio" name="sisu" formControlName="sisu" [value]="false" id="sisu-no"><label for="sisu-no">No</label>
+          <input type="radio" name="sisu" formControlName="sisu" [value]="true" id="sisu-yes"><label for="sisu-yes">Yes</label>
+        </fieldset>
         
         <button type="submit" class="button small expanded">Race!</button>
         <button type="button" class="button small expanded clear secondary" (click)="cancelForm()">Cancel</button>

@@ -33,6 +33,7 @@ export class ConfigureRaceComponent implements OnInit {
 			changeableWeather: false,
 			pitStops: false,
 			flyingStart: false,
+			sisu: false,
 			dashboard: new Dashboard(CarClass.gt6, false, Tyres.asphalt, Weather.dry),
 			log: [],
 			stageTime: 0
@@ -42,22 +43,23 @@ export class ConfigureRaceComponent implements OnInit {
 			details: {
 				name: 		'',
 				isgoytra: false,
-				options: {carClass: true, tyres: true, weather: true, changeableWeather: true, pitStops: true, flyingStart: true}
+				options: {carClass: true, tyres: true, weather: true, changeableWeather: true, pitStops: true, flyingStart: true, sisu: true}
 			},
 			stages:[this.stage],
 			totalTime: 0
 		}
 
 		this.raceDetailsForm = this.fb.group({
-			name: 		[this.race.details.name],
-			special: 	[this.stage.special],
-			class: 		[this.stage.dashboard.class],
-			bop: 		[this.stage.dashboard.bop],
-			weather: 	[this.stage.dashboard.weather],
+			name: 		 [this.race.details.name],
+			special: 	 [this.stage.special],
+			class: 		 [this.stage.dashboard.class],
+			bop: 		 [this.stage.dashboard.bop],
+			weather: 	 [this.stage.dashboard.weather],
 			changeableWeather: [this.stage.changeableWeather],
-			tyres: 		[this.stage.dashboard.tyres],
-			pits: 		[this.stage.pitStops],
-			flyingStart: [this.stage.flyingStart]
+			tyres: 		 [this.stage.dashboard.tyres],
+			pits: 		 [this.stage.pitStops],
+			flyingStart: [this.stage.flyingStart],
+			sisu:		 [this.stage.sisu]
 		});
 	}
 
@@ -94,7 +96,8 @@ export class ConfigureRaceComponent implements OnInit {
 			changeableWeather: [this.race.stages[this.stageIndex].changeableWeather],
 			tyres: 		[this.race.stages[this.stageIndex].dashboard.tyres],
 			pits: 		[this.race.stages[this.stageIndex].pitStops],
-			flyingStart: [this.race.stages[this.stageIndex].flyingStart]
+			flyingStart: [this.race.stages[this.stageIndex].flyingStart],
+			sisu:		[this.race.stages[this.stageIndex].sisu]
 		});
 
 		this.race.stages.push(this.stage);
@@ -107,6 +110,7 @@ export class ConfigureRaceComponent implements OnInit {
 		this.stage.changeableWeather 	= this.raceDetailsForm.value.changeableWeather;
 		this.stage.pitStops 			= this.raceDetailsForm.value.pits;
 		this.stage.flyingStart			= this.raceDetailsForm.value.flyingStart;
+		this.stage.sisu                 = this.raceDetailsForm.value.sisu;
 
 		// Update the dashboard setup
 		this.stage.dashboard.class   	= this.raceDetailsForm.value.class;

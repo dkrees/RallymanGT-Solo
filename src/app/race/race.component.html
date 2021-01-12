@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <p>Class: {{race.stages[stageIndex].dashboard.class}} | Gear: {{race.stages[stageIndex].dashboard.gear}} | Focus Tokens: {{race.stages[stageIndex].dashboard.focusTokens}} | Gear Damage: {{race.stages[stageIndex].dashboard.gearDamage}} | Brake Damage: {{race.stages[stageIndex].dashboard.brakeDamage}} | Coast Damage: {{race.stages[stageIndex].dashboard.coastDamage}} | Weather: {{race.stages[stageIndex].dashboard.weather}} | Tyres: {{race.stages[stageIndex].dashboard.tyres}}</p>
+  <p>Class: {{race.stages[stageIndex].dashboard.class}} | Gear: {{race.stages[stageIndex].dashboard.gear}} | Focus Tokens: {{race.stages[stageIndex].dashboard.focusTokens}} | Gear Damage: {{race.stages[stageIndex].dashboard.gearDamage}} | Brake Damage: {{race.stages[stageIndex].dashboard.brakeDamage}} | Coast Damage: {{race.stages[stageIndex].dashboard.coastDamage}} | Weather: {{race.stages[stageIndex].dashboard.weather}} | Tyres: {{race.stages[stageIndex].dashboard.tyres}} | <span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></p>
 
   <div class="grid-x grid-padding-x">
     <div class="cell shrink">
@@ -53,6 +53,7 @@
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
         <button type="button" class="button alert digit" *ngIf="race.stages[stageIndex].flyingStart" [ngClass]="{'selected':turn.flyingStartFail}" (click)="flyingStartFailed()">Flying Start <i class="material-icons md-36">warning</i></button>
+        <button *ngIf="race.stages[stageIndex].sisu" type="button" class="button warning digit" [disabled]="!turn.loc || race.stages[stageIndex].dashboard.sisuUsed" [ngClass]="{'selected':turn.locGear == '00'}" (click)="sisu()"><span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></button>
       </div>
 
       <div *ngIf="turn.loc" class="grid-x grid-padding-x">

@@ -1,36 +1,37 @@
 import { GT4, GT5, GT6, GT5BOP, GT6BOP, Dice } from './carClasses';
 
 export interface Turn {
-	dice: 			Dice[],
-	loc: 			boolean,
-	locGear: 		string,
-	flyingStartFail: boolean,
-	flatOut: 		boolean,
-	focus: 			number,
-	damage: 		{gear:number, brake: number, coast:number},
-	time: 			number,
-	entry: 			string,
-	gear: 			string,
-	weatherChange: 	boolean,
-	pitstop:		boolean,
-	pitGear:		string
+    dice: Dice[];
+    loc: boolean;
+	locGear: string;
+	sisuUsed: boolean;
+    flyingStartFail: boolean;
+    flatOut: boolean;
+    focus: number;
+    damage: {gear: number, brake: number, coast: number};
+    time: number;
+    entry: string;
+    gear: string;
+    weatherChange: boolean;
+    pitstop: boolean;
+    pitGear: string;
 }
 
 export enum Weather {
-	dry = 'dry',
-	wet = 'rain'
+    dry = 'dry',
+    wet = 'rain'
 }
 
 export enum CarClass {
-	gt6 = 'GT6',
-	gt5 = 'GT5',
-	gt4 = 'GT4'
+    gt6 = 'GT6',
+    gt5 = 'GT5',
+    gt4 = 'GT4'
 }
 
 export enum Tyres {
-	soft = 'soft',
-	asphalt = 'asphalt',
-	rain = 'rain'
+    soft = 'soft',
+    asphalt = 'asphalt',
+    rain = 'rain'
 }
 
 // export enum PitStops {
@@ -39,60 +40,61 @@ export enum Tyres {
 // }
 
 export let timing = {
-	standardRules: {
-		'6' : 10,
-		'5' : 15,
-		'4' : 20,
-		'3' : 30,
-		'2' : 40,
-		'1' : 50,
-		'0' : 60,
-		'00': 30
-	}
-}
+    standardRules: {
+        6: 10,
+        5: 15,
+        4: 20,
+        3: 30,
+        2: 40,
+        1: 50,
+        0: 60,
+        '00': 30
+  }
+};
 
 export let damage = [
-	{id: 'G', label: 'Gear Damage'},
-	{id: 'B', label: 'Brake Damage'},
-	{id: 'C', label: 'Coast Damage'}
+    {id: 'G', label: 'Gear Damage'},
+    {id: 'B', label: 'Brake Damage'},
+    {id: 'C', label: 'Coast Damage'}
 ];
 
 export class Dashboard {
-	class: 			CarClass;
-	bop: 			boolean;
-	weather: 		Weather;
-	tyres: 			Tyres;
-	focusTokens: 	number;
-	gearDamage: 	number;
-	brakeDamage: 	number;
-	coastDamage: 	number;
-	gear: 			string;
+    class: CarClass;
+    bop: boolean;
+    weather: Weather;
+    tyres: Tyres;
+    focusTokens: number;
+    gearDamage: number;
+    brakeDamage: number;
+    coastDamage: number;
+	gear: string;
+	sisuUsed: boolean;
 
-	constructor (carClass:CarClass, bop:boolean, tyres:Tyres, weather:Weather) {
-		
-		this.class 			= carClass;
-		this.bop 			= bop;
-		this.tyres 			= tyres;
-		this.weather 		= weather;
+    constructor(carClass: CarClass, bop: boolean, tyres: Tyres, weather: Weather) {
 
-		this.focusTokens 	= 0;
-		this.gearDamage 	= 0;
-		this.brakeDamage 	= 0;
-		this.coastDamage 	= 0;
-		this.gear 			= '0';
+        this.class          = carClass;
+        this.bop            = bop;
+        this.tyres 	        = tyres;
+        this.weather        = weather;
 
-	}
+        this.focusTokens 	= 0;
+        this.gearDamage 	= 0;
+        this.brakeDamage 	= 0;
+        this.coastDamage 	= 0;
+        this.gear 			= '0';
 
-	getDice(carClass:CarClass, bop:boolean, tyres:Tyres, weather:Weather):{gears:Dice[], coasts:Dice[], brakes:Dice[], boost:Dice[]} {
+    }
 
-		let gears: Dice[];
-		let coasts: Dice[];
-		let brakes: Dice[];
-		let boosts: Dice[];
+    getDice(carClass: CarClass, bop: boolean, tyres:Tyres, weather:Weather):{gears:Dice[], coasts:Dice[], brakes:Dice[], boost:Dice[]} {
 
-		if (carClass == CarClass.gt6) {
+    let gears: Dice[];
+    let coasts: Dice[];
+    let brakes: Dice[];
+    let boosts: Dice[];
 
-			if (bop) {
+    if (carClass === CarClass.gt6) {
+
+        if (bop) {
 				gears  = GT6BOP[tyres][weather].gears.dice;
 				coasts = GT6BOP[tyres][weather].coasts.dice;
 				brakes = GT6BOP[tyres][weather].brakes.dice;
@@ -136,6 +138,7 @@ export interface Stage {
 	changeableWeather: 	boolean,
 	pitStops: 			boolean,
 	flyingStart:		boolean,
+	sisu:				boolean,
 	dashboard: 			Dashboard,
 	log: 				Turn[],
 	stageTime:			number			
@@ -145,7 +148,7 @@ export interface Race {
 	details: {
 		name: 		string,
 		isgoytra: 	boolean,
-		options: {carClass: boolean, tyres: boolean, weather: boolean, changeableWeather: boolean, pitStops: boolean, flyingStart: boolean}
+		options: {carClass: boolean, tyres: boolean, weather: boolean, changeableWeather: boolean, pitStops: boolean, flyingStart: boolean, sisu: boolean}
 	},
 	stages: Stage[],
 	totalTime: number

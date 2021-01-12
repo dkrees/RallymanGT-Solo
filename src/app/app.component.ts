@@ -1,6 +1,6 @@
-import { Component, OnInit } 	from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
-import { LocalstorageService } 	from './localstorage.service';
+import { LocalstorageService } from './localstorage.service';
 
 
 declare var $:any

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RaceComponent } from './race/race.component';
-import { WelcomeComponent } from './welcome/welcome.component'; 
-import { ConfigureRaceComponent } from './configure-race/configure-race.component'; 
+import { WelcomeComponent } from './welcome/welcome.component';
+import { ConfigureRaceComponent } from './configure-race/configure-race.component';
 import { FinishRaceComponent } from './finish-race/finish-race.component';
 
 const routes: Routes = [

@@ -9,7 +9,7 @@ export const ISGOYTRARaces: RaceFormat[] = [
 			details: {
 				name: 'July race name',
 				isgoytra: true,
-				options: {carClass: true, tyres: false, weather: false, changeableWeather: false, pitStops: false, flyingStart: false}
+				options: {carClass: true, tyres: false, weather: false, changeableWeather: false, pitStops: false, flyingStart: false, sisu: false}
 			},
 			stages: [
 				{
@@ -17,6 +17,7 @@ export const ISGOYTRARaces: RaceFormat[] = [
 					changeableWeather: false,
 					pitStops: false,
 					flyingStart: false,
+					sisu: false,
 					dashboard: new Dashboard(CarClass.gt6, false, Tyres.asphalt, Weather.dry),
 					log: [],
 					stageTime: 0

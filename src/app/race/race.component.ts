@@ -140,8 +140,8 @@ export class RaceComponent implements OnInit {
 			this.turn.gear = '2';
 		}
 
-		// uh oh, Loss of Control
-		if (this.turn.loc) {
+		// uh oh, Loss of Control (and SISU is not used)
+		if (this.turn.loc && !this.turn.sisuUsed) {
 
 			// append loc gear to entry
 			this.turn.entry = this.turn.entry.concat(this.turn.locGear);
@@ -172,6 +172,11 @@ export class RaceComponent implements OnInit {
 		if (this.turn.loc) {
 			
 			this.turn.entry = this.turn.entry.concat('!');
+
+			// SISU
+			if (this.turn.sisuUsed) {
+				this.turn.entry = this.turn.entry.concat('S');
+			}
 
 			for (var i = 0; i < this.turn.damage.gear; ++i) {
 				this.turn.entry = this.turn.entry.concat('G');
@@ -291,7 +296,7 @@ export class RaceComponent implements OnInit {
 	// LOSS OF CONTROL
 	// ==========================================
 	// oops. loss of control!
-	lossOfControl(loc:string):void {
+	lossOfControl(loc: string):void {
 		this.metrics('loc');
 		this.turn.loc = !this.turn.loc;
 		if (this.turn.loc) {
@@ -300,6 +305,16 @@ export class RaceComponent implements OnInit {
 			this.turn.locGear = '';
 		}
 
+		this.entry();
+	}
+
+	// ==========================================
+	// SISU
+	// ==========================================
+	sisu():void {
+		if (!this.turn.loc) { return; }
+		this.metrics('SISU');
+		this.turn.sisuUsed = !this.turn.sisuUsed;
 		this.entry();
 	}
 
@@ -356,6 +371,7 @@ export class RaceComponent implements OnInit {
 			dice: [],
 			loc: false,
 			locGear: '',
+			sisuUsed: false,
 			flyingStartFail: false,
 			flatOut: false,
 			focus: 0,
@@ -398,8 +414,11 @@ export class RaceComponent implements OnInit {
 		}
 
 		this.race.stages[this.stageIndex].dashboard.gear = this.turn.gear;
-		
 
+		if (this.turn.sisuUsed) {
+			this.race.stages[this.stageIndex].dashboard.sisuUsed = true;
+		}
+		
 		if (this.turn.pitstop) {
 
 			this.race.stages[this.stageIndex].dashboard.tyres = this.tyreSelect;
@@ -440,6 +459,11 @@ export class RaceComponent implements OnInit {
 
 		// find the last gear entry (regardless which entry was deleted)
 		this.race.stages[this.stageIndex].dashboard.gear = this.race.stages[this.stageIndex].log[this.race.stages[this.stageIndex].log.length-1].gear;
+
+		// undo used sisu
+		if (deletedEntry[0].sisuUsed) {
+			this.race.stages[this.stageIndex].dashboard.sisuUsed = false;
+		}
 
 		// find the lastest weather condition
 		if (deletedEntry[0].weatherChange) {
