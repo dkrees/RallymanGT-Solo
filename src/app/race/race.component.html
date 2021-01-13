@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <p>Class: {{race.stages[stageIndex].dashboard.class}} | Gear: {{race.stages[stageIndex].dashboard.gear}} | Focus Tokens: {{race.stages[stageIndex].dashboard.focusTokens}} | Gear Damage: {{race.stages[stageIndex].dashboard.gearDamage}} | Brake Damage: {{race.stages[stageIndex].dashboard.brakeDamage}} | Coast Damage: {{race.stages[stageIndex].dashboard.coastDamage}} | Weather: {{race.stages[stageIndex].dashboard.weather}} | Tyres: {{race.stages[stageIndex].dashboard.tyres}} | <span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></p>
+  <p>Class: {{race.stages[stageIndex].dashboard.class}} | Gear: {{race.stages[stageIndex].dashboard.gear}} | Focus Tokens: {{race.stages[stageIndex].dashboard.focusTokens}} | Gear Damage: {{race.stages[stageIndex].dashboard.gearDamage}} | Brake Damage: {{race.stages[stageIndex].dashboard.brakeDamage}} | Coast Damage: {{race.stages[stageIndex].dashboard.coastDamage}} | Weather: {{race.stages[stageIndex].dashboard.weather}} | Tyres: {{race.stages[stageIndex].dashboard.tyres}} <span *ngIf="race.stages[stageIndex].sisu">| <span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></span></p>
 
   <div class="grid-x grid-padding-x">
     <div class="cell shrink">
@@ -53,25 +53,20 @@
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '0'}" (click)="lossOfControl('0')">0</button>
         <button type="button" class="button alert digit" [disabled]="race.stages[stageIndex].dashboard.gear == '00'" [ngClass]="{'selected':turn.locGear == '00'}" (click)="lossOfControl('00')">00</button>
         <button type="button" class="button alert digit" *ngIf="race.stages[stageIndex].flyingStart" [ngClass]="{'selected':turn.flyingStartFail}" (click)="flyingStartFailed()">Flying Start <i class="material-icons md-36">warning</i></button>
-        <button *ngIf="race.stages[stageIndex].sisu" type="button" class="button warning digit" [disabled]="!turn.loc || race.stages[stageIndex].dashboard.sisuUsed" [ngClass]="{'selected':turn.locGear == '00'}" (click)="sisu()"><span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></button>
-      </div>
-
-      <div *ngIf="turn.loc" class="grid-x grid-padding-x">
-        <div class="cell shrink">
-          <button type="button" class="button gear die expanded digit" (click)="addDamage('gear')">-G</button>
-        </div>
-        <div class="cell shrink">
-          <button type="button" class="button brake die expanded digit" (click)="addDamage('brake')">-B</button>
-        </div>
-        <div class="cell shrink">
-          <button type="button" class="button coast die expanded digit" (click)="addDamage('coast')">-C</button>
-        </div>
-
-        <div class="cell auto">
-          <button type="button" class="button expanded secondary hollow" (click)="clearDamage()">Clear</button>
-        </div>
       </div>
     </div>
+    
+    <div *ngIf="turn.loc" class="cell small-6">
+      <label>Loss of Control Effect:</label>
+      <div class="expanded button-group">
+        <button *ngIf="race.stages[stageIndex].sisu" type="button" class="button warning digit" [disabled]="!turn.loc || race.stages[stageIndex].dashboard.sisuUsed" [ngClass]="{'selected':turn.sisuUsed}" (click)="sisu()"><span [ngClass]="{'text-line-through': race.stages[stageIndex].dashboard.sisuUsed}">SISU</span></button>
+        <button type="button" class="button gear die digit" (click)="addDamage('gear')">-G</button>
+        <button type="button" class="button brake die digit" (click)="addDamage('brake')">-B</button>
+        <button type="button" class="button coast die digit" (click)="addDamage('coast')">-C</button>
+        <button type="button" class="button expanded secondary hollow" (click)="clearDamage()">Clear</button>
+      </div>
+    </div>
+    
 
     <div class="cell small-4" *ngIf="race.stages[stageIndex].changeableWeather">
       <label>Weather:</label>
